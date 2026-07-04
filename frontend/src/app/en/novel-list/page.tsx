@@ -9,6 +9,7 @@ interface Novel {
   Title: string;
   AltTitle: string;
   Slug: string;
+  Author: string;
   Status: string;
   Views: number;
   Rating: number;

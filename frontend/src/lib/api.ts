@@ -55,7 +55,7 @@ export const auth = {
 
 // Novels
 export const novels = {
-  list: (params?: { page?: number; limit?: number; q?: string; status?: string; genre?: string; sort?: string; order?: string }) =>
+  list: (params?: { page?: number; limit?: number; q?: string; status?: string; genre?: string; genres?: string; genre_mode?: string; sort?: string; order?: string; min_chapters?: number; min_rating?: number; min_reviews?: number }) =>
     fetcher<{ data: any[]; page: number; limit: number; total: number; total_pages: number }>("/novels", { params: params as any }),
   get: (id: number | string) => fetcher<any>(`/novels/${id}`),
   chapters: (id: number | string, params?: { page?: number; limit?: number }) =>

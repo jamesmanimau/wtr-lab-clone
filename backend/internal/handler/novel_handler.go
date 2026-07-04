@@ -3,6 +3,7 @@ package handler
 import (
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -24,6 +25,12 @@ func (h *NovelHandler) List(c *gin.Context) {
 	genre := c.Query("genre")
 	sort := c.DefaultQuery("sort", "created_at")
 	order := c.DefaultQuery("order", "desc")
+	q := c.Query("q")
+	minChapters, _ := strconv.Atoi(c.DefaultQuery("min_chapters", "0"))
+	minRating, _ := strconv.ParseFloat(c.DefaultQuery("min_rating", "0"), 64)
+	minReviews, _ := strconv.Atoi(c.DefaultQuery("min_reviews", "0"))
+	genresParam := c.Query("genres")
+	genreMode := c.DefaultQuery("genre_mode", "or")
 
 	if page < 1 {
 		page = 1
@@ -33,6 +40,11 @@ func (h *NovelHandler) List(c *gin.Context) {
 	}
 
 	query := h.DB.Model(&model.Novel{}).Preload("Genres")
+
+	if q != "" {
+		like := "%" + q + "%"
+		query = query.Where("title ILIKE ? OR alt_title ILIKE ? OR description ILIKE ?", like, like, like)
+	}
 
 	if status != "" {
 		query = query.Where("status = ?", status)
@@ -44,12 +56,45 @@ func (h *NovelHandler) List(c *gin.Context) {
 			Where("genres.slug = ?", genre)
 	}
 
+	if genresParam != "" {
+		genreSlugs := strings.Split(genresParam, ",")
+		if genreMode == "and" {
+			for _, slug := range genreSlugs {
+				slug = strings.TrimSpace(slug)
+				if slug == "" {
+					continue
+				}
+				subQuery := h.DB.Table("novel_genres").
+					Select("novel_id").
+					Joins("JOIN genres ON genres.id = novel_genres.genre_id").
+					Where("genres.slug = ?", slug)
+				query = query.Where("novels.id IN (?)", subQuery)
+			}
+		} else {
+			query = query.Joins("JOIN novel_genres ON novel_genres.novel_id = novels.id").
+				Joins("JOIN genres ON genres.id = novel_genres.genre_id").
+				Where("genres.slug IN ?", genreSlugs)
+		}
+	}
+
+	if minChapters > 0 {
+		query = query.Where("chapters >= ?", minChapters)
+	}
+	if minRating > 0 {
+		query = query.Where("rating >= ?", minRating)
+	}
+	if minReviews > 0 {
+		query = query.Where("rating_count >= ?", minReviews)
+	}
+
 	sortMap := map[string]string{
 		"created_at": "novels.created_at",
 		"title":      "novels.title",
 		"views":      "novels.views",
 		"chapters":   "novels.chapters",
 		"rating":     "novels.rating",
+		"readers":    "novels.readers",
+		"reviews":    "novels.rating_count",
 	}
 	if col, ok := sortMap[sort]; ok {
 		query = query.Order(col + " " + order)
