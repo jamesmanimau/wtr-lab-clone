@@ -168,7 +168,7 @@ export default function AdminNovelsPage() {
                     </div>
                   </div>
                 ) : (
-                  <div className="flex items-center justify-between gap-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
                     <div className="flex-1 min-w-0">
                       <h3 className="text-sm font-semibold text-white truncate">{n.Title}</h3>
                       <p className="text-xs text-gray-500 truncate mt-0.5">
@@ -183,10 +183,10 @@ export default function AdminNovelsPage() {
                       </div>
                     </div>
                     <div className="flex gap-2 shrink-0">
-                      <button onClick={() => startEdit(n)} className="px-3 py-1.5 bg-[#1e1e3a] hover:bg-[#2a2a4a] text-gray-300 text-xs rounded-lg transition-colors">
+                      <button onClick={() => startEdit(n)} className="flex-1 sm:flex-none px-3 py-1.5 bg-[#1e1e3a] hover:bg-[#2a2a4a] text-gray-300 text-xs rounded-lg transition-colors">
                         Edit
                       </button>
-                      <button onClick={() => handleDelete(n.ID)} className="px-3 py-1.5 bg-red-900/50 hover:bg-red-800/50 text-red-400 text-xs rounded-lg transition-colors">
+                      <button onClick={() => handleDelete(n.ID)} className="flex-1 sm:flex-none px-3 py-1.5 bg-red-900/50 hover:bg-red-800/50 text-red-400 text-xs rounded-lg transition-colors">
                         Delete
                       </button>
                     </div>

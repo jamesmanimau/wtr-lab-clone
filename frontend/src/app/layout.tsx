@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "WTR-LAB - Read Light Novels in English Machine Translation",
@@ -31,10 +29,8 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-title" content="wtr-lab" />
         <link rel="manifest" href="/assets/favicon/site.webmanifest" />
       </head>
-      <body className="min-h-screen flex flex-col gradient-bg">
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+      <body className="min-h-screen gradient-bg">
+        {children}
       </body>
     </html>
   );

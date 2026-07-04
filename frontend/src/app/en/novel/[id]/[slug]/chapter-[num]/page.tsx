@@ -1,24 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { useParams } from "next/navigation";
-
-interface ChapterData {
-  ID: number;
-  Number: number;
-  Title: string;
-  Content: string;
-  NovelID: number;
-  IsLocked: boolean;
-}
-
-interface NovelInfo {
-  ID: number;
-  Title: string;
-  Slug: string;
-  Chapters: number;
-}
+import ChapterReader from "@/components/ChapterReader";
 
 function generateMockContent(chapterNum: number): string {
   const paragraphs = [
@@ -43,10 +27,9 @@ export default function ChapterReaderPage() {
   const slug = params?.slug as string;
   const numStr = params?.num as string;
 
-  const [chapter, setChapter] = useState<ChapterData | null>(null);
-  const [novel, setNovel] = useState<NovelInfo | null>(null);
+  const [chapter, setChapter] = useState<{ number: number; title: string; content: string; isLocked: boolean } | null>(null);
+  const [novel, setNovel] = useState<{ id: number; slug: string; title: string; totalChapters: number } | null>(null);
   const [loading, setLoading] = useState(true);
-  const [fontSize, setFontSize] = useState(18);
 
   const chapterNum = parseInt(numStr?.replace("chapter-", "") || "1");
 
@@ -54,20 +37,18 @@ export default function ChapterReaderPage() {
     if (!id) return;
     setLoading(true);
 
-    const ch: ChapterData = {
-      ID: chapterNum,
-      Number: chapterNum,
-      Title: `Chapter ${chapterNum}`,
-      Content: generateMockContent(chapterNum),
-      NovelID: parseInt(id),
-      IsLocked: chapterNum > 70,
+    const ch = {
+      number: chapterNum,
+      title: `Chapter ${chapterNum}`,
+      content: generateMockContent(chapterNum),
+      isLocked: chapterNum > 70,
     };
 
-    const nv: NovelInfo = {
-      ID: parseInt(id),
-      Title: slug ? slug.replace(/-/g, " ") : "Novel",
-      Slug: slug || "",
-      Chapters: 135,
+    const nv = {
+      id: parseInt(id),
+      slug: slug || "",
+      title: slug ? slug.replace(/-/g, " ") : "Novel",
+      totalChapters: 135,
     };
 
     setTimeout(() => {
@@ -77,116 +58,18 @@ export default function ChapterReaderPage() {
     }, 200);
   }, [id, chapterNum, slug]);
 
-  if (loading || !chapter || !novel) {
-    return (
-      <div className="max-w-3xl mx-auto px-4 py-16">
-        <div className="animate-pulse space-y-4">
-          <div className="h-6 bg-[#1e1e3a] rounded w-1/3 mx-auto" />
-          <div className="h-4 bg-[#1e1e3a] rounded w-1/4 mx-auto" />
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="h-3 bg-[#1e1e3a] rounded w-full" />
-          ))}
-        </div>
-      </div>
-    );
-  }
+  const novelHref = `/en/novel/${id}/${slug}`;
+  const prevHref = chapterNum > 1 ? `/en/novel/${id}/${slug}/chapter-${chapterNum - 1}` : undefined;
+  const nextHref = chapterNum < (novel?.totalChapters ?? Infinity) ? `/en/novel/${id}/${slug}/chapter-${chapterNum + 1}` : undefined;
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-6">
-      {/* Breadcrumb */}
-      <nav className="text-xs text-gray-500 mb-4">
-        <Link href="/en" className="hover:text-violet-400 transition-colors">Home</Link>
-        <span className="mx-1">/</span>
-        <Link href="/en/novel-list" className="hover:text-violet-400 transition-colors">Novels</Link>
-        <span className="mx-1">/</span>
-        <Link href={`/en/novel/${id}/${slug}`} className="hover:text-violet-400 transition-colors">
-          {novel.Title.length > 40 ? novel.Title.slice(0, 40) + "..." : novel.Title}
-        </Link>
-        <span className="mx-1">/</span>
-        <span className="text-gray-400">Chapter {chapter.Number}</span>
-      </nav>
-
-      {/* Reader Settings */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => setFontSize(Math.max(14, fontSize - 2))}
-            className="w-8 h-8 rounded-lg bg-[#1e1e3a] text-gray-400 hover:text-white flex items-center justify-center text-sm transition-colors"
-          >
-            A-
-          </button>
-          <span className="text-xs text-gray-500 w-8 text-center">{fontSize}</span>
-          <button
-            onClick={() => setFontSize(Math.min(28, fontSize + 2))}
-            className="w-8 h-8 rounded-lg bg-[#1e1e3a] text-gray-400 hover:text-white flex items-center justify-center text-sm transition-colors"
-          >
-            A+
-          </button>
-        </div>
-      </div>
-
-      {/* Chapter title */}
-      <h1 className="text-xl font-bold text-white text-center mb-8">
-        {chapter.Title}
-      </h1>
-
-      {/* Content */}
-      <div
-        className="text-gray-300 leading-relaxed space-y-6"
-        style={{ fontSize: `${fontSize}px` }}
-      >
-        {chapter.Content.split("\n\n").map((para, i) => (
-          <p key={i} className="text-justify">{para}</p>
-        ))}
-      </div>
-
-      {/* Navigation */}
-      <div className="flex items-center justify-between mt-12 pt-6 border-t border-[#1e1e3a]">
-        {chapter.Number > 1 ? (
-          <Link
-            href={`/en/novel/${id}/${slug}/chapter-${chapter.Number - 1}`}
-            className="flex items-center gap-2 px-4 py-2 bg-[#1e1e3a] hover:bg-[#2a2a4a] rounded-lg text-sm text-gray-300 transition-colors"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            Previous Chapter
-          </Link>
-        ) : (
-          <div />
-        )}
-
-        <Link
-          href={`/en/novel/${id}/${slug}`}
-          className="text-sm text-violet-400 hover:text-violet-300 transition-colors"
-        >
-          Novel Page
-        </Link>
-
-        {chapter.Number < novel.Chapters ? (
-          <Link
-            href={`/en/novel/${id}/${slug}/chapter-${chapter.Number + 1}`}
-            className="flex items-center gap-2 px-4 py-2 bg-[#1e1e3a] hover:bg-[#2a2a4a] rounded-lg text-sm text-gray-300 transition-colors"
-          >
-            Next Chapter
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </Link>
-        ) : (
-          <div />
-        )}
-      </div>
-
-      {/* Chapter select */}
-      <div className="mt-6 text-center">
-        <Link
-          href={`/en/novel/${id}/${slug}`}
-          className="text-sm text-gray-500 hover:text-violet-400 transition-colors"
-        >
-          ← Back to Table of Contents
-        </Link>
-      </div>
-    </div>
+    <ChapterReader
+      chapter={chapter}
+      novel={novel}
+      loading={loading}
+      prevHref={prevHref}
+      nextHref={nextHref}
+      novelHref={novelHref}
+    />
   );
 }

@@ -3,12 +3,17 @@ import Link from "next/link";
 const footerLinks = [
   { href: "/en/about-us", label: "About Us" },
   { href: "/en/contact-us", label: "Contact Us" },
+  { href: "/en/trending", label: "Trending" },
+  { href: "/en/recommendation", label: "Recommendations" },
+  { href: "/en/news", label: "News" },
   { href: "/en/news?type=changelog", label: "Changelog" },
   { href: "/en/dmca", label: "DMCA" },
   { href: "/en/cookie-policy", label: "Cookie Policy" },
   { href: "/en/privacy-policy", label: "Privacy Policy" },
   { href: "/en/terms-of-use", label: "Terms of Use" },
   { href: "/en/public-stats", label: "Stats" },
+  { href: "/en/profile/request-serie", label: "Request Series" },
+  { href: "/en/profile/vote-serie", label: "Vote Series" },
 ];
 
 export default function Footer() {

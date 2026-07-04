@@ -84,7 +84,7 @@ export default function AdminRequestsPage() {
       <div className="space-y-3">
         {requests.map((req) => (
           <div key={req.ID} className="p-4 bg-[#12122a] border border-[#1e1e3a] rounded-xl">
-            <div className="flex items-start justify-between gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
               <div className="flex-1 min-w-0">
                 <h3 className="text-sm font-semibold text-white">{req.NovelTitle}</h3>
                 {req.NovelURL && (
@@ -92,7 +92,7 @@ export default function AdminRequestsPage() {
                     {req.NovelURL}
                   </a>
                 )}
-                <div className="flex items-center gap-3 mt-2 text-xs text-gray-500">
+                <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-gray-500">
                   <span>Source: {req.Source || "manual"}</span>
                   <span>Votes: {req.Votes}</span>
                   <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium ${
@@ -109,13 +109,13 @@ export default function AdminRequestsPage() {
                 <div className="flex gap-2 shrink-0">
                   <button
                     onClick={() => handleReview(req.ID, "approved")}
-                    className="px-3 py-1.5 bg-green-700 hover:bg-green-600 text-white text-xs rounded-lg transition-colors"
+                    className="flex-1 sm:flex-none px-3 py-1.5 bg-green-700 hover:bg-green-600 text-white text-xs rounded-lg transition-colors"
                   >
                     Approve
                   </button>
                   <button
                     onClick={() => handleReview(req.ID, "rejected")}
-                    className="px-3 py-1.5 bg-red-700 hover:bg-red-600 text-white text-xs rounded-lg transition-colors"
+                    className="flex-1 sm:flex-none px-3 py-1.5 bg-red-700 hover:bg-red-600 text-white text-xs rounded-lg transition-colors"
                   >
                     Reject
                   </button>

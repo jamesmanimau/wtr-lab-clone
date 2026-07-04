@@ -399,13 +399,13 @@ export default function NovelFinderPage() {
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <label className="mb-1.5 block text-sm text-gray-500">Sort by</label>
-              <div className="flex flex-wrap gap-1 bg-[#1e1e3a] rounded-lg p-0.5 border border-[#2a2a4a]">
+              <div className="flex flex-nowrap gap-1 bg-[#1e1e3a] rounded-lg p-0.5 border border-[#2a2a4a] overflow-x-auto scrollbar-hide">
                 {SORT_OPTIONS.map((o) => (
                   <button
                     key={o.value}
                     type="button"
                     onClick={() => setSort(o.value)}
-                    className={`px-3 py-1.5 text-xs rounded-md transition-colors ${
+                    className={`shrink-0 px-3 py-1.5 text-xs rounded-md transition-colors ${
                       sort === o.value
                         ? "bg-[#2193b0] text-white"
                         : "text-gray-400 hover:text-white"
@@ -535,7 +535,7 @@ export default function NovelFinderPage() {
                 ))}
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-1 max-h-64 overflow-y-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1 max-h-64 overflow-y-auto">
               {[genreOptions.slice(0, half), genreOptions.slice(half)].map((column, ci) => (
                 <ul key={ci} className="space-y-0.5">
                   {column.map((genre) => (
@@ -775,11 +775,11 @@ export default function NovelFinderPage() {
           </div>
 
           {/* Actions */}
-          <div className="flex items-center justify-between border-t border-[#1e1e3a] pt-4">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 border-t border-[#1e1e3a] pt-4">
             <button
               type="button"
               onClick={clearAll}
-              className="flex items-center gap-2 rounded-lg border border-[#2a2a4a] px-5 py-2 text-sm font-medium text-gray-300 transition-colors hover:bg-[#1e1e3a]"
+              className="flex items-center justify-center gap-2 rounded-lg border border-[#2a2a4a] px-5 py-2.5 text-sm font-medium text-gray-300 transition-colors hover:bg-[#1e1e3a]"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -793,7 +793,7 @@ export default function NovelFinderPage() {
                 doSearch(1);
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
-              className="rounded-lg bg-[#2193b0] px-6 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+              className="rounded-lg bg-[#2193b0] px-6 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 text-center"
             >
               Apply Filters
             </button>
