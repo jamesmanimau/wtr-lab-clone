@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import ChapterReader from "@/components/ChapterReader";
 
@@ -21,6 +21,18 @@ function generateMockContent(chapterNum: number): string {
   return content.join("\n\n");
 }
 
+function generateMockChapters(total: number, current: number) {
+  const list = [];
+  for (let i = 1; i <= total; i++) {
+    list.push({
+      number: i,
+      title: `Chapter ${i}`,
+      createdAt: new Date(Date.now() - (total - i) * 86400000).toISOString(),
+    });
+  }
+  return list;
+}
+
 export default function ChapterReaderPage() {
   const params = useParams();
   const id = params?.id as string;
@@ -28,10 +40,13 @@ export default function ChapterReaderPage() {
   const numStr = params?.num as string;
 
   const [chapter, setChapter] = useState<{ number: number; title: string; content: string; isLocked: boolean } | null>(null);
-  const [novel, setNovel] = useState<{ id: number; slug: string; title: string; totalChapters: number } | null>(null);
+  const [novel, setNovel] = useState<{ id: number; slug: string; title: string; totalChapters: number; coverUrl?: string; category?: string } | null>(null);
+  const [chapters, setChapters] = useState<{ number: number; title: string; createdAt?: string }[]>([]);
   const [loading, setLoading] = useState(true);
+  const [inLibrary, setInLibrary] = useState(false);
 
   const chapterNum = parseInt(numStr?.replace("chapter-", "") || "1");
+  const totalChapters = 135;
 
   useEffect(() => {
     if (!id) return;
@@ -48,28 +63,40 @@ export default function ChapterReaderPage() {
       id: parseInt(id),
       slug: slug || "",
       title: slug ? slug.replace(/-/g, " ") : "Novel",
-      totalChapters: 135,
+      totalChapters,
+      coverUrl: "",
+      category: "Fantasy",
     };
+
+    const chList = generateMockChapters(totalChapters, chapterNum);
 
     setTimeout(() => {
       setChapter(ch);
       setNovel(nv);
+      setChapters(chList);
       setLoading(false);
     }, 200);
   }, [id, chapterNum, slug]);
 
+  const handleAddToLibrary = useCallback(() => {
+    setInLibrary((prev) => !prev);
+  }, []);
+
   const novelHref = `/en/novel/${id}/${slug}`;
   const prevHref = chapterNum > 1 ? `/en/novel/${id}/${slug}/chapter-${chapterNum - 1}` : undefined;
-  const nextHref = chapterNum < (novel?.totalChapters ?? Infinity) ? `/en/novel/${id}/${slug}/chapter-${chapterNum + 1}` : undefined;
+  const nextHref = chapterNum < totalChapters ? `/en/novel/${id}/${slug}/chapter-${chapterNum + 1}` : undefined;
 
   return (
     <ChapterReader
       chapter={chapter}
       novel={novel}
+      chapters={chapters}
       loading={loading}
       prevHref={prevHref}
       nextHref={nextHref}
       novelHref={novelHref}
+      onAddToLibrary={handleAddToLibrary}
+      inLibrary={inLibrary}
     />
   );
 }

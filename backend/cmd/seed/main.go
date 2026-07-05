@@ -210,7 +210,6 @@ func main() {
 		&model.NovelGenre{},
 		&model.Chapter{},
 		&model.User{},
-		&model.Session{},
 		&model.Vote{},
 		&model.Request{},
 		&model.TicketTransaction{},

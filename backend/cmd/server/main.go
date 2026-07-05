@@ -29,7 +29,6 @@ func main() {
 		&model.NovelGenre{},
 		&model.Chapter{},
 		&model.User{},
-		&model.Session{},
 		&model.Vote{},
 		&model.Request{},
 		&model.TicketTransaction{},
@@ -42,7 +41,7 @@ func main() {
 
 	log.Println("database migration completed")
 
-	r := router.Setup(db, cfg.JWTSecret, cfg.FrontendURL)
+	r := router.Setup(db, cfg.JWTSecret, cfg.FrontendURL, cfg.CookieSecure)
 
 	port := cfg.ServerPort
 	if envPort := os.Getenv("PORT"); envPort != "" {

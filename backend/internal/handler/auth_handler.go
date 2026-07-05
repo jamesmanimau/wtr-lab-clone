@@ -12,12 +12,13 @@ import (
 )
 
 type AuthHandler struct {
-	DB        *gorm.DB
-	JWTSecret string
+	DB           *gorm.DB
+	JWTSecret    string
+	CookieSecure bool
 }
 
-func NewAuthHandler(db *gorm.DB, jwtSecret string) *AuthHandler {
-	return &AuthHandler{DB: db, JWTSecret: jwtSecret}
+func NewAuthHandler(db *gorm.DB, jwtSecret string, cookieSecure bool) *AuthHandler {
+	return &AuthHandler{DB: db, JWTSecret: jwtSecret, CookieSecure: cookieSecure}
 }
 
 type RegisterRequest struct {
@@ -70,7 +71,6 @@ func (h *AuthHandler) Register(c *gin.Context) {
 			"username": user.Username,
 			"email":    user.Email,
 		},
-		"token": token,
 	})
 }
 
@@ -106,7 +106,6 @@ func (h *AuthHandler) Login(c *gin.Context) {
 			"username": user.Username,
 			"email":    user.Email,
 		},
-		"token": token,
 	})
 }
 
@@ -135,7 +134,7 @@ func (h *AuthHandler) Me(c *gin.Context) {
 }
 
 func (h *AuthHandler) Logout(c *gin.Context) {
-	c.SetCookie("auth_token", "", -1, "/", "", false, true)
+	c.SetCookie("auth_token", "", -1, "/", "", h.CookieSecure, true)
 	c.JSON(http.StatusOK, gin.H{"message": "logged out"})
 }
 
@@ -151,5 +150,5 @@ func (h *AuthHandler) generateToken(userID uint) (string, error) {
 }
 
 func (h *AuthHandler) setCookie(c *gin.Context, token string) {
-	c.SetCookie("auth_token", token, 7*24*3600, "/", "", false, true)
+	c.SetCookie("auth_token", token, 7*24*3600, "/", "", h.CookieSecure, true)
 }

@@ -40,12 +40,12 @@ async function fetcher<T>(endpoint: string, options: FetcherOptions = {}): Promi
 // Auth
 export const auth = {
   login: (email: string, password: string) =>
-    fetcher<{ user: any; token: string }>("/auth/login", {
+    fetcher<{ user: any }>("/auth/login", {
       method: "POST",
       body: JSON.stringify({ email, password }),
     }),
   register: (username: string, email: string, password: string) =>
-    fetcher<{ user: any; token: string }>("/auth/register", {
+    fetcher<{ user: any }>("/auth/register", {
       method: "POST",
       body: JSON.stringify({ username, email, password }),
     }),

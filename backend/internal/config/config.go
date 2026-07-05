@@ -7,15 +7,16 @@ import (
 )
 
 type Config struct {
-	DBHost     string
-	DBPort     string
-	DBUser     string
-	DBPassword string
-	DBName     string
-	DBSSLMode  string
-	JWTSecret  string
-	ServerPort string
-	FrontendURL string
+	DBHost       string
+	DBPort       string
+	DBUser       string
+	DBPassword   string
+	DBName       string
+	DBSSLMode    string
+	JWTSecret    string
+	ServerPort   string
+	FrontendURL  string
+	CookieSecure bool
 }
 
 func Load() *Config {
@@ -30,7 +31,8 @@ func Load() *Config {
 		DBSSLMode:   getEnv("DB_SSLMODE", "disable"),
 		JWTSecret:   getEnv("JWT_SECRET", "dev-secret"),
 		ServerPort:  getEnv("SERVER_PORT", "8080"),
-		FrontendURL: getEnv("FRONTEND_URL", "http://localhost:3000"),
+		FrontendURL:  getEnv("FRONTEND_URL", "http://localhost:3000"),
+		CookieSecure: getEnv("COOKIE_SECURE", "true") == "true",
 	}
 }
 

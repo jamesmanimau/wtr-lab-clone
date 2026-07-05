@@ -1,13 +1,15 @@
 package router
 
 import (
+	"time"
+
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"wtr-lab-clone/backend/internal/handler"
 	"wtr-lab-clone/backend/internal/middleware"
 )
 
-func Setup(db *gorm.DB, jwtSecret string, frontendURL string) *gin.Engine {
+func Setup(db *gorm.DB, jwtSecret string, frontendURL string, cookieSecure bool) *gin.Engine {
 	r := gin.Default()
 
 	r.Use(middleware.CORS(frontendURL))
@@ -27,14 +29,19 @@ func Setup(db *gorm.DB, jwtSecret string, frontendURL string) *gin.Engine {
 	api.GET("/novels/:id/chapters", novelHandler.Chapters)
 
 	chapterHandler := handler.NewChapterHandler(db)
-	api.GET("/chapters/:id", chapterHandler.Get)
+	api.GET("/chapters/:id", middleware.OptionalAuth(jwtSecret), chapterHandler.Get)
 
-	authHandler := handler.NewAuthHandler(db, jwtSecret)
-	api.POST("/auth/register", authHandler.Register)
-	api.POST("/auth/login", authHandler.Login)
-	api.POST("/auth/logout", authHandler.Logout)
-	authGroup := api.Group("/auth", middleware.AuthRequired(jwtSecret))
-	authGroup.GET("/me", authHandler.Me)
+	authHandler := handler.NewAuthHandler(db, jwtSecret, cookieSecure)
+	authLimiter := middleware.NewRateLimiter(10, 1*time.Minute)
+	authGroup := api.Group("/auth")
+	authGroup.Use(authLimiter.Middleware())
+	{
+		authGroup.POST("/register", authHandler.Register)
+		authGroup.POST("/login", authHandler.Login)
+		authGroup.POST("/logout", authHandler.Logout)
+	}
+	authMeGroup := api.Group("/auth", middleware.AuthRequired(jwtSecret))
+	authMeGroup.GET("/me", authHandler.Me)
 
 	rankingHandler := handler.NewRankingHandler(db)
 	api.GET("/ranking/:period", rankingHandler.Get)
@@ -72,17 +79,23 @@ func Setup(db *gorm.DB, jwtSecret string, frontendURL string) *gin.Engine {
 
 		requestHandler := handler.NewRequestHandler(db)
 		protected.POST("/requests", requestHandler.Create)
-		protected.PUT("/requests/:id", requestHandler.Review)
 
 		libraryHandler := handler.NewLibraryHandler(db)
 		protected.GET("/library", libraryHandler.Get)
+	}
 
-		protected.POST("/novels", novelHandler.Create)
-		protected.PUT("/novels/:id", novelHandler.Update)
-		protected.DELETE("/novels/:id", novelHandler.Delete)
+	adminGroup := protected.Group("")
+	adminGroup.Use(middleware.AdminRequired(db))
+	{
+		requestHandler := handler.NewRequestHandler(db)
+		adminGroup.PUT("/requests/:id", requestHandler.Review)
+
+		adminGroup.POST("/novels", novelHandler.Create)
+		adminGroup.PUT("/novels/:id", novelHandler.Update)
+		adminGroup.DELETE("/novels/:id", novelHandler.Delete)
 
 		importerHandler := handler.NewImporterHandler(db)
-		protected.POST("/novels/import", importerHandler.Import)
+		adminGroup.POST("/novels/import", importerHandler.Import)
 	}
 
 	api.GET("/novels/import/search", func(c *gin.Context) {
