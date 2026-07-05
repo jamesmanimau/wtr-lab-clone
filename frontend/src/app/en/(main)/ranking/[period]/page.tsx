@@ -4,13 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { novels } from "@/lib/api";
-
-interface Novel {
-  ID: number; Title: string; Slug: string; Author: string; Status: string;
-  Views: number; Rating: number; Chapters: number; Readers: number; Chars: string;
-  CoverURL: string;
-  Genres: { ID: number; Slug: string; Name: string }[];
-}
+import { Novel } from "@/types";
+import { MOCK_RANKING_FULL } from "@/lib/mockData";
 
 const periods = [
   { key: "daily", label: "Daily" },
@@ -19,23 +14,10 @@ const periods = [
   { key: "all_time", label: "All Time" },
 ];
 
-const mockRanking: Novel[] = [
-  { ID: 1, Title: "Question and Answer Douluo: Tang San's Time Travel Revealed, Tang Hao Breaks Through Defense", Slug: "qa-douluo", Author: "佚名", Status: "ongoing", Views: 169503, Rating: 1.7, Chapters: 372, Readers: 892, Chars: "890K", CoverURL: "", Genres: [{ID:1,Slug:"action",Name:"Action"},{ID:8,Slug:"fan-fiction",Name:"Fan-Fiction"}] },
-  { ID: 2, Title: "Douluo Continent: Taking Tang San As a Disciple, with a Ten-thousand-fold Return for Teaching Him", Slug: "douluo-disciple", Author: "佚名", Status: "ongoing", Views: 62994, Rating: 2.0, Chapters: 284, Readers: 456, Chars: "650K", CoverURL: "", Genres: [{ID:1,Slug:"action",Name:"Action"},{ID:8,Slug:"fan-fiction",Name:"Fan-Fiction"}] },
-  { ID: 3, Title: "Lord: God-tier Attribute, Recruits Fallen Angels of Original Sin", Slug: "lord-god-tier", Author: "佚名", Status: "ongoing", Views: 51502, Rating: 3.3, Chapters: 412, Readers: 1203, Chars: "1.1M", CoverURL: "", Genres: [{ID:1,Slug:"action",Name:"Action"},{ID:12,Slug:"fantasy",Name:"Fantasy"}] },
-  { ID: 4, Title: "I Just Started High School, But the System Insists I'm an Emperor in My Twilight Years", Slug: "high-school-emperor", Author: "佚名", Status: "ongoing", Views: 51120, Rating: 1.9, Chapters: 264, Readers: 88, Chars: "450K", CoverURL: "", Genres: [{ID:1,Slug:"action",Name:"Action"},{ID:3,Slug:"comedy",Name:"Comedy"}] },
-  { ID: 5, Title: "Douluo Continent: A Sharp Commentary on the Goddesses, Bibi Dong Breaks Down in Defense", Slug: "douluo-commentary", Author: "佚名", Status: "ongoing", Views: 41918, Rating: 2.9, Chapters: 198, Readers: 567, Chars: "520K", CoverURL: "", Genres: [{ID:1,Slug:"action",Name:"Action"},{ID:8,Slug:"fan-fiction",Name:"Fan-Fiction"}] },
-  { ID: 6, Title: "Football: I See Weaknesses!", Slug: "football-weaknesses", Author: "佚名", Status: "ongoing", Views: 41170, Rating: 1.8, Chapters: 156, Readers: 234, Chars: "380K", CoverURL: "", Genres: [{ID:32,Slug:"sports",Name:"Sports"}] },
-  { ID: 7, Title: "I am the Crown Prince of the Ming Dynasty", Slug: "crown-prince-ming", Author: "佚名", Status: "completed", Views: 78901, Rating: 4.2, Chapters: 1592, Readers: 505, Chars: "2.96M", CoverURL: "", Genres: [{ID:1,Slug:"action",Name:"Action"},{ID:11,Slug:"historical",Name:"Historical"}] },
-  { ID: 8, Title: "Naruto: In Konoha Village, I Awakened Wood Release at the Start", Slug: "naruto-konoha-wood", Author: "佚名", Status: "ongoing", Views: 123456, Rating: 3.8, Chapters: 1002, Readers: 342, Chars: "1.8M", CoverURL: "", Genres: [{ID:1,Slug:"action",Name:"Action"},{ID:8,Slug:"fan-fiction",Name:"Fan-Fiction"}] },
-  { ID: 9, Title: "Could I Really End Up 'collapsing My Image' Even in the World of Rule Horror", Slug: "rule-horror", Author: "佚名", Status: "ongoing", Views: 8120, Rating: 4.1, Chapters: 925, Readers: 15, Chars: "1.75M", CoverURL: "", Genres: [{ID:20,Slug:"mystery",Name:"Mystery"}] },
-  { ID: 10, Title: "The Legend of the Mountain and Sea Demon Subduing", Slug: "mountain-sea-demon", Author: "佚名", Status: "completed", Views: 4580, Rating: 3.9, Chapters: 1522, Readers: 3, Chars: "2.82M", CoverURL: "", Genres: [{ID:1,Slug:"action",Name:"Action"},{ID:16,Slug:"martial-arts",Name:"Martial Arts"}] },
-];
-
 export default function RankingPage() {
   const params = useParams();
   const currentPeriod = (params?.period as string) || "daily";
-  const [data, setData] = useState<Novel[]>(mockRanking);
+  const [data, setData] = useState<Novel[]>(MOCK_RANKING_FULL);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -45,7 +27,7 @@ export default function RankingPage() {
         const res = await novels.list({ sort: "views", order: "desc", limit: 50 });
         setData(res.data);
       } catch {
-        setData(mockRanking);
+        setData(MOCK_RANKING_FULL);
       }
       setLoading(false);
     };

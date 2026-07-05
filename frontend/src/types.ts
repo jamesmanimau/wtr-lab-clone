@@ -1,5 +1,5 @@
 export interface Genre {
-  ID: number;
+  ID?: number;
   Slug: string;
   Name: string;
 }
@@ -7,22 +7,22 @@ export interface Genre {
 export interface Novel {
   ID: number;
   Title: string;
-  AltTitle: string;
+  AltTitle?: string;
   Slug: string;
-  Author: string;
-  AuthorSlug: string;
-  Status: string;
+  Author?: string;
+  AuthorSlug?: string;
+  Status?: string;
   Views: number;
   Rating: number;
-  RatingCount: number;
+  RatingCount?: number;
   Chapters: number;
-  Readers: number;
-  Chars: string;
-  AIPercent: string;
-  Description: string;
+  Readers?: number;
+  Chars?: string;
+  AIPercent?: string;
+  Description?: string;
   CoverURL: string;
-  RequestedBy: string;
-  ReleasedBy: string;
+  RequestedBy?: string;
+  ReleasedBy?: string;
   Genres: Genre[];
   CreatedAt?: string;
   Tags?: string[];

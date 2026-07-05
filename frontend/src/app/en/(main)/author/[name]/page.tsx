@@ -5,21 +5,13 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import NovelCard from "@/components/NovelCard";
 import { author } from "@/lib/api";
-
-interface Novel {
-  ID: number; Title: string; Slug: string; Rating: number; Chapters: number;
-  Genres: { Slug: string; Name: string }[];
-}
-
-const MOCK_NOVELS: Novel[] = [
-  { ID: 7, Title: "I am the Crown Prince of the Ming Dynasty", Slug: "i-am-the-crown-prince-of-the-ming-dynasty", Rating: 4.2, Chapters: 1592, Genres: [{Slug:"action",Name:"Action"}] },
-  { ID: 6, Title: "First-rank Di Consort", Slug: "first-rank-di-consort", Rating: 3.6, Chapters: 387, Genres: [{Slug:"historical",Name:"Historical"}] },
-];
+import { Novel } from "@/types";
+import { MOCK_AUTHOR_NOVELS } from "@/lib/mockData";
 
 export default function AuthorPage() {
   const params = useParams();
   const authorName = decodeURIComponent((params?.name as string) || "");
-  const [novels, setNovels] = useState<Novel[]>(MOCK_NOVELS);
+  const [novels, setNovels] = useState<Novel[]>(MOCK_AUTHOR_NOVELS);
   const [sort, setSort] = useState("newest");
 
   useEffect(() => {
@@ -29,8 +21,8 @@ export default function AuthorPage() {
   }, [authorName]);
 
   const sorted = [...novels].sort((a, b) => {
-    if (sort === "rating") return b.Rating - a.Rating;
-    if (sort === "chapters") return b.Chapters - a.Chapters;
+    if (sort === "rating") return (b.Rating || 0) - (a.Rating || 0);
+    if (sort === "chapters") return (b.Chapters || 0) - (a.Chapters || 0);
     return b.ID - a.ID;
   });
 

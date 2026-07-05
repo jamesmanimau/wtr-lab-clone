@@ -5,27 +5,11 @@ import Link from "next/link";
 import Card from "@/components/ui/Card";
 import NovelCard from "@/components/NovelCard";
 import { novels } from "@/lib/api";
-
-interface Novel {
-  ID: number; Title: string; Slug: string; Rating: number;
-  Chapters: number; Views: number; CoverURL: string;
-  Genres: { Slug: string; Name: string }[];
-}
-
-const mockData: Novel[] = [
-  { ID: 2, Title: "Question and Answer Douluo: Tang San's Time Travel Revealed", Slug: "qa-douluo", Rating: 1.7, Chapters: 372, Views: 169503, CoverURL: "", Genres: [{Slug:"action",Name:"Action"}] },
-  { ID: 3, Title: "Douluo Continent: Taking Tang San As a Disciple", Slug: "douluo-disciple", Rating: 2.0, Chapters: 284, Views: 62994, CoverURL: "", Genres: [{Slug:"action",Name:"Action"}] },
-  { ID: 4, Title: "I Just Started High School, But the System Insists I'm an Emperor", Slug: "high-school-emperor", Rating: 1.9, Chapters: 264, Views: 51120, CoverURL: "", Genres: [{Slug:"fantasy",Name:"Fantasy"}] },
-  { ID: 5, Title: "All Heavens: My Dantian is a Universe in Its Own", Slug: "dantian-universe", Rating: 3.2, Chapters: 412, Views: 34567, CoverURL: "", Genres: [{Slug:"action",Name:"Action"}] },
-  { ID: 6, Title: "Pretending to Be the Villain, All I Want is to Die at Naruto's Hands", Slug: "pretending-villain", Rating: 2.8, Chapters: 98, Views: 23456, CoverURL: "", Genres: [{Slug:"action",Name:"Action"}] },
-  { ID: 7, Title: "On the Day the Empress Sentenced Me to Death, the System Granted Me Emperor Level Cultivation", Slug: "empress-sentenced", Rating: 3.5, Chapters: 203, Views: 18765, CoverURL: "", Genres: [{Slug:"fantasy",Name:"Fantasy"}] },
-  { ID: 8, Title: "Naruto talent entry: Starting with otsusuki bloodline", Slug: "otsusuki-bloodline", Rating: 4.1, Chapters: 156, Views: 34521, CoverURL: "", Genres: [{Slug:"action",Name:"Action"}] },
-  { ID: 9, Title: "Start Learning Magic at Hogwarts", Slug: "magic-hogwarts", Rating: 3.9, Chapters: 234, Views: 28765, CoverURL: "", Genres: [{Slug:"fantasy",Name:"Fantasy"}] },
-  { ID: 10, Title: "Douluo Continent: A Sharp Commentary on the Goddesses", Slug: "douluo-commentary", Rating: 2.9, Chapters: 198, Views: 41918, CoverURL: "", Genres: [{Slug:"action",Name:"Action"}] },
-];
+import { Novel } from "@/types";
+import { MOCK_RECOMMENDATION } from "@/lib/mockData";
 
 export default function RecommendationPage() {
-  const [data, setData] = useState<Novel[]>(mockData);
+  const [data, setData] = useState<Novel[]>(MOCK_RECOMMENDATION);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {

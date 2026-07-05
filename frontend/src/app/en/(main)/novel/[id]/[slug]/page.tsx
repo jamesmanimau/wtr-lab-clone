@@ -4,63 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { novels } from "@/lib/api";
-
-interface Novel {
-  ID: number;
-  Title: string;
-  AltTitle: string;
-  Slug: string;
-  Author: string;
-  AuthorSlug: string;
-  Status: string;
-  Views: number;
-  Rating: number;
-  RatingCount: number;
-  Chapters: number;
-  Readers: number;
-  Chars: string;
-  AIPercent: string;
-  Description: string;
-  CoverURL: string;
-  RequestedBy: string;
-  ReleasedBy: string;
-  Genres: { ID: number; Slug: string; Name: string }[];
-}
-
-interface Chapter {
-  ID: number;
-  NovelID: number;
-  Number: number;
-  Title: string;
-  IsLocked: boolean;
-  TicketCost: number;
-}
-
-const mockNovelDetail: Novel = {
-  ID: 1,
-  Title: "Having Dinner with His Brother, the Cold and Aloof Tycoon Becomes Addicted to His Doting Affections",
-  AltTitle: "陪哥哥吃饭，冷欲大佬强宠上瘾",
-  Slug: "having-dinner-with-his-brother",
-  Author: "半条活鱼",
-  AuthorSlug: "ban-tiao-huo-yu",
-  Status: "completed",
-  Views: 3142,
-  Rating: 3.5,
-  RatingCount: 45,
-  Chapters: 135,
-  Readers: 17,
-  Chars: "250K",
-  AIPercent: "37%",
-  Description: `[Cold and aloof tycoon × Bright and delicate, lazy princess + Forced marriage + 12-year age gap + 1v1, both are virgins] The first time she saw him, she only thought he had a great physique and, unaware of her own limitations, handed him her business card, asking him to be her model. The second time, she got drunk and went into the wrong room, groping him all over. Later, Yunxi learned that he was Zhao Qiyue, the head of the Zhao family, the most powerful family in Beijing's elite circle, not only incredibly powerful but also ruthless. No one who messed with him had a good ending. Later, he pinned her against the car door: "You touched me, and you think you can run away?" Yunxi gave him her first kiss, and all her future kisses in return. But the man still wasn't satisfied. Yunxi begged him: "Brother, can we be even now?" Zhao Qiyue pulled her into his arms: "Even? Sure, let's get married first." The Yun family's little princess, considered the least promising by her elders, was ultimately spoiled rotten by that cold and aloof tycoon.`,
-  CoverURL: "",
-  RequestedBy: "Diddy",
-  ReleasedBy: "Blackie",
-  Genres: [
-    { ID: 22, Slug: "romance", Name: "Romance" },
-    { ID: 30, Slug: "slice-of-life", Name: "Slice of Life" },
-    { ID: 35, Slug: "urban-life", Name: "Urban Life" },
-  ],
-};
+import { Novel, Chapter } from "@/types";
+import { MOCK_NOVEL_DETAIL } from "@/lib/mockData";
 
 export default function NovelDetailPage() {
   const params = useParams();
@@ -81,7 +26,7 @@ export default function NovelDetailPage() {
         const res = await novels.get(id);
         setNovel(res);
       } catch {
-        const m = mockNovelDetail;
+        const m = MOCK_NOVEL_DETAIL;
         m.ID = parseInt(id) || 1;
         m.Slug = params?.slug as string || m.Slug;
         setNovel(m);
@@ -168,30 +113,32 @@ export default function NovelDetailPage() {
             <span className={`px-2 py-0.5 rounded text-xs font-medium ${
               novel.Status === "ongoing" ? "bg-green-900/40 text-green-400 border border-green-800/30" : "bg-blue-900/40 text-blue-400 border border-blue-800/30"
             }`}>
-              {novel.Status.charAt(0).toUpperCase() + novel.Status.slice(1)}
+              {novel.Status ? novel.Status.charAt(0).toUpperCase() + novel.Status.slice(1) : ""}
             </span>
             <span className="text-gray-400">{novel.Views.toLocaleString()} Views</span>
             <span className="text-gray-400">{novel.Chapters} Chapters</span>
-            <span className="text-gray-400">{novel.Readers} Readers</span>
-            <span className="text-gray-400">{novel.Chars}</span>
+            {novel.Readers !== undefined && <span className="text-gray-400">{novel.Readers} Readers</span>}
+            {novel.Chars && <span className="text-gray-400">{novel.Chars}</span>}
             {novel.Rating > 0 && (
-              <span className="text-yellow-400">★ {novel.Rating.toFixed(1)} ({novel.RatingCount})</span>
+              <span className="text-yellow-400">★ {novel.Rating.toFixed(1)} ({novel.RatingCount || 0})</span>
             )}
           </div>
 
           {/* AI Progress */}
-          <div className="mt-4">
-            <div className="flex items-center gap-2 text-sm text-gray-400 mb-1">
-              <span>AI-Unlock Progress</span>
-              <span className="text-violet-400">{novel.AIPercent}</span>
+          {novel.AIPercent && (
+            <div className="mt-4">
+              <div className="flex items-center gap-2 text-sm text-gray-400 mb-1">
+                <span>AI-Unlock Progress</span>
+                <span className="text-violet-400">{novel.AIPercent}</span>
+              </div>
+              <div className="w-full max-w-xs h-2 bg-card-hover rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-violet-600 to-purple-600 rounded-full"
+                  style={{ width: novel.AIPercent }}
+                />
+              </div>
             </div>
-            <div className="w-full max-w-xs h-2 bg-card-hover rounded-full overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-violet-600 to-purple-600 rounded-full"
-                style={{ width: novel.AIPercent }}
-              />
-            </div>
-          </div>
+          )}
 
           {/* Tags */}
           <div className="flex flex-wrap gap-1.5 mt-4">
@@ -242,17 +189,17 @@ export default function NovelDetailPage() {
       {/* Tab Content */}
       {activeTab === "about" && (
         <div className="bg-card border border-line rounded-xl p-6">
-          <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-line">{novel.Description}</p>
+          <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-line">{novel.Description || "No description available."}</p>
 
           {/* Details */}
           <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
             <div>
               <span className="text-gray-500">Author</span>
-              <p className="text-gray-200">{novel.Author}</p>
+              <p className="text-gray-200">{novel.Author || "-"}</p>
             </div>
             <div>
               <span className="text-gray-500">Status</span>
-              <p className="text-gray-200 capitalize">{novel.Status}</p>
+              <p className="text-gray-200 capitalize">{novel.Status || "-"}</p>
             </div>
             <div>
               <span className="text-gray-500">Date Added</span>

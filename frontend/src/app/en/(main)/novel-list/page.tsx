@@ -3,24 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { novels } from "@/lib/api";
-
-interface Novel {
-  ID: number;
-  Title: string;
-  AltTitle: string;
-  Slug: string;
-  Author: string;
-  Status: string;
-  Views: number;
-  Rating: number;
-  Chapters: number;
-  Readers: number;
-  Chars: string;
-  AIPercent: string;
-  Description: string;
-  CoverURL: string;
-  Genres: { ID: number; Slug: string; Name: string }[];
-}
+import { Novel } from "@/types";
+import { MOCK_NOVEL_LIST } from "@/lib/mockData";
 
 const genreList = [
   "action","adult","adventure","comedy","drama","ecchi","erciyuan","fan-fiction","fantasy",
@@ -28,19 +12,6 @@ const genreList = [
   "mecha","military","mystery","psychological","romance","school-life","sci-fi","seinen",
   "shoujo","shoujo-ai","shounen","shounen-ai","slice-of-life","smut","sports","supernatural",
   "tragedy","urban-life","wuxia","xianxia","xuanhuan","yaoi","yuri",
-];
-
-const mockNovels: Novel[] = [
-  { ID: 1, Title: "Red Chamber: Saving the Falling Heavens", AltTitle: "红楼之挽天倾", Slug: "red-chamber-saving-falling-heavens", Author: "佚名", Status: "completed", Views: 3142, Rating: 3.5, Chapters: 1782, Readers: 3, Chars: "7.81M", AIPercent: "8.92%", Description: "A young man from a later generation transmigrates into the world of Dream of the Red Chamber.", CoverURL: "", Genres: [{ ID: 1, Slug: "action", Name: "Action" }, { ID: 5, Slug: "drama", Name: "Drama" }, { ID: 8, Slug: "fan-fiction", Name: "Fan-Fiction" }, { ID: 12, Slug: "fantasy", Name: "Fantasy" }] },
-  { ID: 2, Title: "Traveling Simultaneously: Across the Heavens", AltTitle: "同时穿越：纵横诸天", Slug: "traveling-simultaneously-across-heavens", Author: "佚名", Status: "ongoing", Views: 2105, Rating: 3.8, Chapters: 84, Readers: 13, Chars: "389K", AIPercent: "63.1%", Description: "Other popular fantasy novels.", CoverURL: "", Genres: [{ ID: 1, Slug: "action", Name: "Action" }, { ID: 8, Slug: "fan-fiction", Name: "Fan-Fiction" }, { ID: 12, Slug: "fantasy", Name: "Fantasy" }] },
-  { ID: 3, Title: "After He Remarrying a Wealthy Young Man from Beijing's Circle, My Childhood Sweethearts Were Furious", AltTitle: "改嫁京圈太子爷后，竹马们气疯了", Slug: "remarrying-wealthy-beijing", Author: "佚名", Status: "completed", Views: 4521, Rating: 4.0, Chapters: 1051, Readers: 11, Chars: "1.83M", AIPercent: "4.76%", Description: "I transmigrated into a book during the Ghost Festival.", CoverURL: "", Genres: [{ ID: 5, Slug: "drama", Name: "Drama" }, { ID: 22, Slug: "romance", Name: "Romance" }, { ID: 35, Slug: "urban-life", Name: "Urban Life" }] },
-  { ID: 4, Title: "Reborn in 1983: My Wife is a Heiress from Beijing's Elite Circle", AltTitle: "重生1983：我妻京圈大小姐", Slug: "reborn-1983-beijing-elite", Author: "佚名", Status: "ongoing", Views: 712, Rating: 3.2, Chapters: 1758, Readers: 9, Chars: "2.49M", AIPercent: "4.32%", Description: "In the winter of 1983, Ye Jianguo, a future tycoon.", CoverURL: "", Genres: [{ ID: 1, Slug: "action", Name: "Action" }, { ID: 5, Slug: "drama", Name: "Drama" }, { ID: 30, Slug: "slice-of-life", Name: "Slice of Life" }, { ID: 35, Slug: "urban-life", Name: "Urban Life" }] },
-  { ID: 5, Title: "Real Dolls: I Use Dolls to Create Perfect Accidents", AltTitle: "真实人偶，我用人偶制造完美意外", Slug: "real-dolls-perfect-accidents", Author: "佚名", Status: "completed", Views: 580, Rating: 3.0, Chapters: 944, Readers: 59, Chars: "1.81M", AIPercent: "100%", Description: "In a parallel world called Blue Star.", CoverURL: "", Genres: [{ ID: 1, Slug: "action", Name: "Action" }, { ID: 5, Slug: "drama", Name: "Drama" }, { ID: 11, Slug: "horror", Name: "Horror" }, { ID: 20, Slug: "mystery", Name: "Mystery" }, { ID: 33, Slug: "supernatural", Name: "Supernatural" }, { ID: 35, Slug: "urban-life", Name: "Urban Life" }] },
-  { ID: 6, Title: "Attack on Titan: I'm an Ackerman", AltTitle: "什么！我竟然是耶格尔派？", Slug: "attack-on-titan-ackerman", Author: "佚名", Status: "ongoing", Views: 361, Rating: 3.6, Chapters: 93, Readers: 28, Chars: "156K", AIPercent: "71%", Description: "Due to limited abilities, some original settings will be modified.", CoverURL: "", Genres: [{ ID: 1, Slug: "action", Name: "Action" }, { ID: 8, Slug: "fan-fiction", Name: "Fan-Fiction" }, { ID: 12, Slug: "fantasy", Name: "Fantasy" }] },
-  { ID: 7, Title: "The Background is So Invincible That the System Was Upgraded Overnight!", AltTitle: "背景太无敌，吓得系统连夜升级！", Slug: "invincible-background-system-upgraded", Author: "佚名", Status: "ongoing", Views: 588, Rating: 4.1, Chapters: 998, Readers: 45, Chars: "2.34M", AIPercent: "100%", Description: "When I gained an invincible background!", CoverURL: "", Genres: [{ ID: 1, Slug: "action", Name: "Action" }, { ID: 3, Slug: "comedy", Name: "Comedy" }, { ID: 12, Slug: "fantasy", Name: "Fantasy" }] },
-  { ID: 8, Title: "Global Cultivation: The Salted-fish Undergraduate with an Alchemy Furnace", AltTitle: "全民修仙：小师妹是丹道本科生", Slug: "global-cultivation-alchemy-furnace", Author: "佚名", Status: "completed", Views: 8120, Rating: 3.9, Chapters: 470, Readers: 13, Chars: "871K", AIPercent: "21.3%", Description: "Five hundred years ago, Earth entered the era of spiritual revival.", CoverURL: "", Genres: [{ ID: 4, Slug: "adventure", Name: "Adventure" }, { ID: 3, Slug: "comedy", Name: "Comedy" }, { ID: 12, Slug: "fantasy", Name: "Fantasy" }, { ID: 23, Slug: "school-life", Name: "School Life" }, { ID: 35, Slug: "urban-life", Name: "Urban Life" }] },
-  { ID: 9, Title: "Black Rock Shooter's Persona", AltTitle: "综漫：黑岩小姐的人格面具", Slug: "black-rock-shooter-persona", Author: "佚名", Status: "completed", Views: 89, Rating: 3.4, Chapters: 154, Readers: 21, Chars: "344K", AIPercent: "39%", Description: "Anime/Manga Crossover Fanfiction.", CoverURL: "", Genres: [{ ID: 1, Slug: "action", Name: "Action" }, { ID: 8, Slug: "fan-fiction", Name: "Fan-Fiction" }, { ID: 12, Slug: "fantasy", Name: "Fantasy" }] },
-  { ID: 10, Title: "Reversing the Immortal Path", AltTitle: "穿越之逆转仙途", Slug: "reversing-immortal-path", Author: "佚名", Status: "completed", Views: 27, Rating: 3.7, Chapters: 261, Readers: 26, Chars: "626K", AIPercent: "19.2%", Description: "Mu Heng, who had been crippled for ten years.", CoverURL: "", Genres: [{ ID: 12, Slug: "fantasy", Name: "Fantasy" }, { ID: 16, Slug: "martial-arts", Name: "Martial Arts" }] },
 ];
 
 const SORT_OPTIONS = [
@@ -54,7 +25,7 @@ const SORT_OPTIONS = [
 const STATUS_OPTIONS = ["All", "Ongoing", "Completed"];
 
 export default function NovelListPage() {
-  const [data, setData] = useState<Novel[]>(mockNovels);
+  const [data, setData] = useState<Novel[]>(MOCK_NOVEL_LIST);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(7524);
@@ -72,7 +43,7 @@ export default function NovelListPage() {
       setData(res.data);
       setTotalPages(res.total_pages);
     } catch {
-      const filtered = mockNovels.filter((n) => {
+      const filtered = MOCK_NOVEL_LIST.filter((n) => {
         if (status && n.Status !== status) return false;
         if (genre && !n.Genres.some((g) => g.Slug === genre)) return false;
         return true;
