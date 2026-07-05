@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { news } from "@/lib/api";
+import { formatDate } from "@/lib/utils";
 
 interface NewsItem {
   ID: number;
@@ -24,12 +25,6 @@ const MOCK_NEWS: NewsItem[] = [
   { ID: 420, Title: "🎉 Site Hits 1 Million Visitors!", Type: "news", CreatedAt: "2026-05-20", Slug: "1-million-visitors" },
 ];
 
-function formatDate(dateStr: string): string {
-  try {
-    return new Date(dateStr).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
-  } catch { return dateStr.split("T")[0]; }
-}
-
 export default function NewsListPage() {
   const [items, setItems] = useState<NewsItem[]>(MOCK_NEWS);
   const [filterType, setFilterType] = useState("all");
@@ -45,7 +40,7 @@ export default function NewsListPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold text-white mb-6">News & Updates</h1>
-      <div className="flex gap-1 bg-[#1e1e3a] rounded-lg p-0.5 mb-8 inline-flex">
+      <div className="flex gap-1 bg-card-hover rounded-lg p-0.5 mb-8 inline-flex">
         {[
           { key: "all", label: "All" },
           { key: "news", label: "News" },
@@ -67,7 +62,7 @@ export default function NewsListPage() {
           <Link
             key={item.ID}
             href={`/en/news/${item.ID}`}
-            className="block p-5 bg-[#12122a] border border-[#1e1e3a] rounded-xl hover:border-violet-800/40 transition-colors group"
+            className="block p-5 bg-card border border-line rounded-xl hover:border-violet-800/40 transition-colors group"
           >
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0 flex-1">

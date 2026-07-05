@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { novels, genres as genresApi, adminNovels } from "@/lib/api";
+import Card from "@/components/ui/Card";
 
 interface NovelItem {
   ID: number;
@@ -100,39 +101,39 @@ export default function AdminNovelsPage() {
     <div className="max-w-6xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold text-white mb-6">Manage Novels</h1>
 
-      {message && <p className="text-sm text-[#6dd5ed] mb-4">{message}</p>}
+      {message && <p className="text-sm text-accent-light mb-4">{message}</p>}
 
       {loading ? (
-        <p className="text-[#2193b0]">Loading...</p>
+        <p className="text-accent">Loading...</p>
       ) : (
         <>
           <div className="space-y-3">
             {data.map((n) => (
-              <div key={n.ID} className="p-4 bg-[#12122a] border border-[#1e1e3a] rounded-xl">
+              <Card key={n.ID}>
                 {editingId === n.ID ? (
                   <div className="space-y-3">
                     <input
                       value={editForm.title}
                       onChange={(e) => setEditForm((p: any) => ({ ...p, title: e.target.value }))}
-                      className="w-full bg-[#1e1e3a] border border-[#2a2a4a] rounded-lg px-3 py-2 text-sm text-gray-200 outline-none"
+                      className="w-full bg-card-hover border border-line-light rounded-lg px-3 py-2 text-sm text-gray-200 outline-none"
                       placeholder="Title"
                     />
                     <input
                       value={editForm.alt_title}
                       onChange={(e) => setEditForm((p: any) => ({ ...p, alt_title: e.target.value }))}
-                      className="w-full bg-[#1e1e3a] border border-[#2a2a4a] rounded-lg px-3 py-2 text-sm text-gray-200 outline-none"
+                      className="w-full bg-card-hover border border-line-light rounded-lg px-3 py-2 text-sm text-gray-200 outline-none"
                       placeholder="Alt Title"
                     />
                     <input
                       value={editForm.author}
                       onChange={(e) => setEditForm((p: any) => ({ ...p, author: e.target.value }))}
-                      className="w-full bg-[#1e1e3a] border border-[#2a2a4a] rounded-lg px-3 py-2 text-sm text-gray-200 outline-none"
+                      className="w-full bg-card-hover border border-line-light rounded-lg px-3 py-2 text-sm text-gray-200 outline-none"
                       placeholder="Author"
                     />
                     <select
                       value={editForm.status}
                       onChange={(e) => setEditForm((p: any) => ({ ...p, status: e.target.value }))}
-                      className="w-full bg-[#1e1e3a] border border-[#2a2a4a] rounded-lg px-3 py-2 text-sm text-gray-200 outline-none"
+                      className="w-full bg-card-hover border border-line-light rounded-lg px-3 py-2 text-sm text-gray-200 outline-none"
                     >
                       <option value="ongoing">Ongoing</option>
                       <option value="completed">Completed</option>
@@ -149,8 +150,8 @@ export default function AdminNovelsPage() {
                             onClick={() => toggleGenre(g.ID)}
                             className={`text-xs px-2 py-1 rounded-full border transition-colors ${
                               editForm.genre_ids.includes(g.ID)
-                                ? "bg-[#2193b0] text-white border-[#2193b0]"
-                                : "bg-[#1e1e3a] text-gray-400 border-[#2a2a4a] hover:text-white"
+                                ? "bg-accent text-white border-accent"
+                                : "bg-card-hover text-gray-400 border-line-light hover:text-white"
                             }`}
                           >
                             {g.Name}
@@ -159,10 +160,10 @@ export default function AdminNovelsPage() {
                       </div>
                     </div>
                     <div className="flex gap-2">
-                      <button onClick={() => saveEdit(n.ID)} className="px-4 py-2 bg-[#2193b0] hover:bg-[#1a7a94] text-white text-sm rounded-lg transition-colors">
+                      <button onClick={() => saveEdit(n.ID)} className="px-4 py-2 bg-accent hover:bg-accent-dark text-white text-sm rounded-lg transition-colors">
                         Save
                       </button>
-                      <button onClick={() => setEditingId(null)} className="px-4 py-2 bg-[#1e1e3a] text-gray-300 text-sm rounded-lg transition-colors">
+                      <button onClick={() => setEditingId(null)} className="px-4 py-2 bg-card-hover text-gray-300 text-sm rounded-lg transition-colors">
                         Cancel
                       </button>
                     </div>
@@ -176,14 +177,14 @@ export default function AdminNovelsPage() {
                       </p>
                       <div className="flex flex-wrap gap-1 mt-1">
                         {n.Genres?.slice(0, 4).map((g) => (
-                          <span key={g.ID} className="text-[9px] px-1.5 py-0.5 rounded-full bg-[#2193b0]/10 text-[#6dd5ed]/80 border border-[#2193b0]/20">
+                          <span key={g.ID} className="text-[9px] px-1.5 py-0.5 rounded-full bg-accent/10 text-accent-light/80 border border-accent/20">
                             {g.Name}
                           </span>
                         ))}
                       </div>
                     </div>
                     <div className="flex gap-2 shrink-0">
-                      <button onClick={() => startEdit(n)} className="flex-1 sm:flex-none px-3 py-1.5 bg-[#1e1e3a] hover:bg-[#2a2a4a] text-gray-300 text-xs rounded-lg transition-colors">
+                      <button onClick={() => startEdit(n)} className="flex-1 sm:flex-none px-3 py-1.5 bg-card-hover hover:bg-line-light text-gray-300 text-xs rounded-lg transition-colors">
                         Edit
                       </button>
                       <button onClick={() => handleDelete(n.ID)} className="flex-1 sm:flex-none px-3 py-1.5 bg-red-900/50 hover:bg-red-800/50 text-red-400 text-xs rounded-lg transition-colors">
@@ -192,7 +193,7 @@ export default function AdminNovelsPage() {
                     </div>
                   </div>
                 )}
-              </div>
+              </Card>
             ))}
           </div>
 
@@ -201,7 +202,7 @@ export default function AdminNovelsPage() {
               <button
                 onClick={() => fetchNovels(Math.max(1, page - 1))}
                 disabled={page <= 1}
-                className="px-3 py-1.5 text-xs rounded-lg bg-[#1e1e3a] text-gray-300 hover:bg-[#2a2a4a] disabled:opacity-40 transition-colors"
+                className="px-3 py-1.5 text-xs rounded-lg bg-card-hover text-gray-300 hover:bg-line-light disabled:opacity-40 transition-colors"
               >
                 Previous
               </button>
@@ -209,7 +210,7 @@ export default function AdminNovelsPage() {
               <button
                 onClick={() => fetchNovels(Math.min(totalPages, page + 1))}
                 disabled={page >= totalPages}
-                className="px-3 py-1.5 text-xs rounded-lg bg-[#1e1e3a] text-gray-300 hover:bg-[#2a2a4a] disabled:opacity-40 transition-colors"
+                className="px-3 py-1.5 text-xs rounded-lg bg-card-hover text-gray-300 hover:bg-line-light disabled:opacity-40 transition-colors"
               >
                 Next
               </button>

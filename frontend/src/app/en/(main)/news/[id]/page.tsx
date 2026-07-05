@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { news } from "@/lib/api";
+import { formatDate } from "@/lib/utils";
 
 interface NewsDetail {
   ID: number;
@@ -18,11 +19,6 @@ const MOCK_DETAILS: Record<number, NewsDetail> = {
   427: { ID: 427, Title: "🎉 Our 16th Giveaway is LIVE! 🎉", Content: "Our 16th Giveaway is now live!\n\nParticipate now for a chance to win amazing prizes!", Type: "news", CreatedAt: "2026-06-25" },
   426: { ID: 426, Title: "Version 1.13.3 - New Source Management & Bug Fixes!", Content: "✨ New Features:\n- New Source Management system\n- Improved chapter loading performance\n\n🐛 Bug Fixes:\n- Fixed reading history\n- Fixed mobile pagination", Type: "changelog", CreatedAt: "2026-06-20" },
 };
-
-function formatDate(dateStr: string): string {
-  try { return new Date(dateStr).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }); }
-  catch { return dateStr; }
-}
 
 export default function NewsDetailPage() {
   const params = useParams();
@@ -60,7 +56,7 @@ export default function NewsDetailPage() {
         <span className="mx-2">/</span>
         <span className="text-gray-400">{detail.Title.slice(0, 50)}</span>
       </nav>
-      <article className="bg-[#12122a] border border-[#1e1e3a] rounded-xl p-8">
+      <article className="bg-card border border-line rounded-xl p-8">
         <div className="flex items-center gap-3 mb-4">
           <span className={`text-xs px-2 py-0.5 rounded ${
             detail.Type === "changelog"
@@ -71,7 +67,7 @@ export default function NewsDetailPage() {
         </div>
         <h1 className="text-2xl font-bold text-white mb-6">{detail.Title}</h1>
         <div className="text-sm text-gray-300 leading-relaxed whitespace-pre-line">{detail.Content}</div>
-        <div className="mt-8 pt-6 border-t border-[#1e1e3a]">
+        <div className="mt-8 pt-6 border-t border-line">
           <Link href="/en/news" className="text-sm text-violet-400 hover:text-violet-300 transition-colors">← Back to News</Link>
         </div>
       </article>

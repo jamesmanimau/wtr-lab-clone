@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { stats } from "@/lib/api";
+import Card from "@/components/ui/Card";
 
 interface StatsData {
   total_novels: number;
@@ -47,13 +48,13 @@ export default function PublicStatsPage() {
       <p className="text-sm text-gray-500 mb-8">Real-time platform statistics for WTR-Lab</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {statCards.map((s) => (
-          <div key={s.key} className="bg-[#12122a] border border-[#1e1e3a] rounded-xl p-5">
+          <Card key={s.key} className="p-5">
             <div className="flex items-center justify-between mb-3">
               <span className="text-2xl">{s.icon}</span>
             </div>
             <p className="text-2xl font-bold text-white">{data[s.key].toLocaleString()}</p>
             <p className="text-sm text-gray-500 mt-1">{s.label}</p>
-          </div>
+          </Card>
         ))}
       </div>
     </div>

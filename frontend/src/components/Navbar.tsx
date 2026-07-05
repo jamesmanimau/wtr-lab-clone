@@ -3,32 +3,10 @@
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
-
-const browseLinks = [
-  { href: "/en/novel-finder", label: "Finder" },
-  { href: "/en/novel-list", label: "Novels" },
-  { href: "/en/ranking/daily", label: "Ranking" },
-  { href: "/en/leaderboard", label: "Leaderboard" },
-  { href: "/en/library", label: "Library" },
-];
-
-const discoverLinks = [
-  { href: "/en/trending", label: "Trending" },
-  { href: "/en/recommendation", label: "Recommendations" },
-];
-
-const communityLinks = [
-  { href: "/en/news", label: "News" },
-  { href: "/en/public-stats", label: "Stats" },
-  { href: "/en/profile/request-serie", label: "Request Series" },
-  { href: "/en/profile/vote-serie", label: "Vote Series" },
-];
-
-const adminLinks = [
-  { href: "/en/admin/import", label: "Import" },
-  { href: "/en/admin/requests", label: "Requests" },
-  { href: "/en/admin/novels", label: "Manage" },
-];
+import { browseLinks, discoverLinks, communityLinks, adminLinks } from "@/lib/navigation";
+import { SearchIcon, CloseIcon, MenuIcon } from "@/components/ui/Icons";
+import Card from "@/components/ui/Card";
+import Button from "@/components/ui/Button";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -91,8 +69,8 @@ export default function Navbar() {
         onClick={() => { setOpen(false); setShowAdmin(false); setShowMore(false); }}
         className={`block text-sm px-3 py-2.5 rounded-lg transition-colors ${
           isActive(link.href)
-            ? "text-[#6dd5ed] bg-[#2193b0]/10"
-            : "text-gray-300 hover:text-white hover:bg-[#1e1e3a]"
+            ? "text-accent-light bg-accent/10"
+            : "text-gray-300 hover:text-white hover:bg-card-hover"
         }`}
       >
         {link.label}
@@ -106,7 +84,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link
             href="/en"
-            className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-[#2193b0] to-[#6dd5ed] bg-clip-text text-transparent shrink-0"
+            className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent shrink-0"
           >
             WTR-LAB
           </Link>
@@ -116,7 +94,7 @@ export default function Navbar() {
             <Link
               href="/en/novel-finder"
               className={`text-xs px-2 py-1.5 rounded-lg transition-colors ${
-                isActive("/en/novel-finder") ? "text-[#6dd5ed] bg-[#2193b0]/10" : "text-gray-300 hover:text-white hover:bg-[#1e1e3a]"
+                isActive("/en/novel-finder") ? "text-accent-light bg-accent/10" : "text-gray-300 hover:text-white hover:bg-card-hover"
               }`}
             >
               Finder
@@ -124,7 +102,7 @@ export default function Navbar() {
             <Link
               href="/en/novel-list"
               className={`text-xs px-2 py-1.5 rounded-lg transition-colors ${
-                isActive("/en/novel-list") ? "text-[#6dd5ed] bg-[#2193b0]/10" : "text-gray-300 hover:text-white hover:bg-[#1e1e3a]"
+                isActive("/en/novel-list") ? "text-accent-light bg-accent/10" : "text-gray-300 hover:text-white hover:bg-card-hover"
               }`}
             >
               Novels
@@ -132,7 +110,7 @@ export default function Navbar() {
             <Link
               href="/en/ranking/daily"
               className={`text-xs px-2 py-1.5 rounded-lg transition-colors ${
-                isActive("/en/ranking") ? "text-[#6dd5ed] bg-[#2193b0]/10" : "text-gray-300 hover:text-white hover:bg-[#1e1e3a]"
+                isActive("/en/ranking") ? "text-accent-light bg-accent/10" : "text-gray-300 hover:text-white hover:bg-card-hover"
               }`}
             >
               Ranking
@@ -140,7 +118,7 @@ export default function Navbar() {
             <Link
               href="/en/leaderboard"
               className={`text-xs px-2 py-1.5 rounded-lg transition-colors ${
-                isActive("/en/leaderboard") ? "text-[#6dd5ed] bg-[#2193b0]/10" : "text-gray-300 hover:text-white hover:bg-[#1e1e3a]"
+                isActive("/en/leaderboard") ? "text-accent-light bg-accent/10" : "text-gray-300 hover:text-white hover:bg-card-hover"
               }`}
             >
               Top
@@ -148,7 +126,7 @@ export default function Navbar() {
             <Link
               href="/en/library"
               className={`text-xs px-2 py-1.5 rounded-lg transition-colors ${
-                isActive("/en/library") ? "text-[#6dd5ed] bg-[#2193b0]/10" : "text-gray-300 hover:text-white hover:bg-[#1e1e3a]"
+                isActive("/en/library") ? "text-accent-light bg-accent/10" : "text-gray-300 hover:text-white hover:bg-card-hover"
               }`}
             >
               Library
@@ -159,8 +137,8 @@ export default function Navbar() {
                 onClick={() => setShowMore(!showMore)}
                 className={`text-xs px-2 py-1.5 rounded-lg transition-colors flex items-center gap-0.5 ${
                   showMore
-                    ? "text-[#6dd5ed] bg-[#2193b0]/10"
-                    : "text-gray-400 hover:text-[#6dd5ed] hover:bg-[#1e1e3a]"
+                    ? "text-accent-light bg-accent/10"
+                    : "text-gray-400 hover:text-accent-light hover:bg-card-hover"
                 }`}
               >
                 More
@@ -169,7 +147,7 @@ export default function Navbar() {
                 </svg>
               </button>
               {showMore && (
-                <div className="absolute top-full right-0 mt-1 w-44 bg-[#12122a] border border-[#1e1e3a] rounded-xl p-2 shadow-xl z-50">
+                <Card className="absolute top-full right-0 mt-1 w-44 p-2 shadow-xl z-50" padding={false}>
                   <p className="text-[10px] uppercase tracking-wider text-gray-600 px-3 pb-1 font-semibold">Discover</p>
                   {discoverLinks.map((link) => (
                     <Link
@@ -178,8 +156,8 @@ export default function Navbar() {
                       onClick={() => setShowMore(false)}
                       className={`block text-sm px-3 py-2 rounded-lg transition-colors ${
                         isActive(link.href)
-                          ? "text-[#6dd5ed] bg-[#2193b0]/10"
-                          : "text-gray-300 hover:text-white hover:bg-[#1e1e3a]"
+                          ? "text-accent-light bg-accent/10"
+                          : "text-gray-300 hover:text-white hover:bg-card-hover"
                       }`}
                     >
                       {link.label}
@@ -193,14 +171,14 @@ export default function Navbar() {
                       onClick={() => setShowMore(false)}
                       className={`block text-sm px-3 py-2 rounded-lg transition-colors ${
                         isActive(link.href)
-                          ? "text-[#6dd5ed] bg-[#2193b0]/10"
-                          : "text-gray-300 hover:text-white hover:bg-[#1e1e3a]"
+                          ? "text-accent-light bg-accent/10"
+                          : "text-gray-300 hover:text-white hover:bg-card-hover"
                       }`}
                     >
                       {link.label}
                     </Link>
                   ))}
-                </div>
+                </Card>
               )}
             </div>
             {/* Admin dropdown */}
@@ -208,24 +186,24 @@ export default function Navbar() {
               <button
                 onClick={() => setShowAdmin(!showAdmin)}
                 className={`text-xs px-2 py-1.5 rounded-lg transition-colors ${
-                  isActive("/en/admin") ? "text-[#6dd5ed]" : "text-gray-500 hover:text-[#6dd5ed]"
+                  isActive("/en/admin") ? "text-accent-light" : "text-gray-500 hover:text-accent-light"
                 }`}
               >
                 Admin
               </button>
               {showAdmin && (
-                <div className="absolute top-full right-0 mt-1 w-40 bg-[#12122a] border border-[#1e1e3a] rounded-xl p-2 shadow-xl z-50">
+                <Card className="absolute top-full right-0 mt-1 w-40 p-2 shadow-xl z-50" padding={false}>
                   {adminLinks.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
                       onClick={() => setShowAdmin(false)}
-                      className="block text-xs text-gray-300 hover:text-white px-3 py-2 rounded-lg hover:bg-[#1e1e3a] transition-colors"
+                      className="block text-xs text-gray-300 hover:text-white px-3 py-2 rounded-lg hover:bg-card-hover transition-colors"
                     >
                       {link.label}
                     </Link>
                   ))}
-                </div>
+                </Card>
               )}
             </div>
           </nav>
@@ -241,12 +219,10 @@ export default function Navbar() {
                     onChange={(e) => setSearch(e.target.value)}
                     onBlur={() => { setTimeout(() => { if (!search) setShowSearch(false); }, 200); }}
                     placeholder="Search novels..."
-                    className="w-full bg-[#1e1e3a] border border-[#2a2a4a] rounded-lg pl-4 pr-10 py-2 text-sm text-gray-200 outline-none focus:border-[#2193b0] transition-colors"
+                    className="w-full bg-card-hover border border-line-light rounded-lg pl-4 pr-10 py-2 text-sm text-gray-200 outline-none focus:border-accent transition-colors"
                   />
-                  <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-[#6dd5ed] transition-colors">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
+                  <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-accent-light transition-colors">
+                    <SearchIcon className="w-4 h-4" />
                   </button>
                 </div>
               </form>
@@ -256,9 +232,7 @@ export default function Navbar() {
                 className="p-2 text-gray-400 hover:text-white transition-colors"
                 aria-label="Search"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
+                <SearchIcon className="w-5 h-5" />
               </button>
             )}
           </div>
@@ -271,31 +245,20 @@ export default function Navbar() {
               className="md:hidden p-2 text-gray-400 hover:text-white transition-colors"
               aria-label="Search"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
+              <SearchIcon className="w-5 h-5" />
             </button>
 
-            <Link
-              href="/en/login"
-              className="hidden sm:inline-block text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-lg bg-[#2193b0] hover:bg-[#1a7a94] text-white transition-colors"
-            >
+            <Button variant="primary" size="md" href="/en/login" className="hidden sm:inline-flex">
               Login
-            </Link>
+            </Button>
 
             {/* Hamburger */}
             <button
-              className="md:hidden text-white p-2 hover:bg-[#1e1e3a] rounded-lg transition-colors"
+              className="md:hidden text-white p-2 hover:bg-card-hover rounded-lg transition-colors"
               onClick={() => setOpen(!open)}
               aria-label="Menu"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                {open ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
+              {open ? <CloseIcon className="w-5 h-5" /> : <MenuIcon className="w-5 h-5" />}
             </button>
           </div>
         </div>
@@ -309,12 +272,10 @@ export default function Navbar() {
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search novels..."
-                  className="w-full bg-[#1e1e3a] border border-[#2a2a4a] rounded-lg pl-4 pr-10 py-2.5 text-sm text-gray-200 outline-none focus:border-[#2193b0] transition-colors"
+                  className="w-full bg-card-hover border border-line-light rounded-lg pl-4 pr-10 py-2.5 text-sm text-gray-200 outline-none focus:border-accent transition-colors"
                 />
-                <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-[#6dd5ed] transition-colors">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
+                <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-accent-light transition-colors">
+                  <SearchIcon className="w-4 h-4" />
                 </button>
               </div>
             </form>
@@ -325,7 +286,7 @@ export default function Navbar() {
 
       {/* Mobile menu overlay */}
       {open && (
-        <div className="md:hidden fixed inset-0 top-16 z-40 bg-[#12122a] overflow-y-auto">
+        <div className="md:hidden fixed inset-0 top-16 z-40 bg-card overflow-y-auto">
           <div className="px-4 py-3 space-y-1">
             <p className="text-[10px] uppercase tracking-wider text-gray-600 px-3 pb-1 font-semibold">Browse</p>
             {browseLinks.map((link) => (
@@ -335,14 +296,14 @@ export default function Navbar() {
                 onClick={() => setOpen(false)}
                 className={`block text-sm px-3 py-2.5 rounded-lg transition-colors ${
                   isActive(link.href)
-                    ? "text-[#6dd5ed] bg-[#2193b0]/10"
-                    : "text-gray-300 hover:text-white hover:bg-[#1e1e3a]"
+                    ? "text-accent-light bg-accent/10"
+                    : "text-gray-300 hover:text-white hover:bg-card-hover"
                 }`}
               >
                 {link.label}
               </Link>
             ))}
-            <div className="pt-2 mt-2 border-t border-[#1e1e3a]">
+            <div className="pt-2 mt-2 border-t border-line">
               <p className="text-[10px] uppercase tracking-wider text-gray-600 px-3 pb-1 font-semibold">Discover</p>
               {discoverLinks.map((link) => (
                 <Link
@@ -351,15 +312,15 @@ export default function Navbar() {
                   onClick={() => setOpen(false)}
                   className={`block text-sm px-3 py-2.5 rounded-lg transition-colors ${
                     isActive(link.href)
-                      ? "text-[#6dd5ed] bg-[#2193b0]/10"
-                      : "text-gray-300 hover:text-white hover:bg-[#1e1e3a]"
+                      ? "text-accent-light bg-accent/10"
+                      : "text-gray-300 hover:text-white hover:bg-card-hover"
                   }`}
                 >
                   {link.label}
                 </Link>
               ))}
             </div>
-            <div className="pt-2 mt-2 border-t border-[#1e1e3a]">
+            <div className="pt-2 mt-2 border-t border-line">
               <p className="text-[10px] uppercase tracking-wider text-gray-600 px-3 pb-1 font-semibold">Community</p>
               {communityLinks.map((link) => (
                 <Link
@@ -368,15 +329,15 @@ export default function Navbar() {
                   onClick={() => setOpen(false)}
                   className={`block text-sm px-3 py-2.5 rounded-lg transition-colors ${
                     isActive(link.href)
-                      ? "text-[#6dd5ed] bg-[#2193b0]/10"
-                      : "text-gray-300 hover:text-white hover:bg-[#1e1e3a]"
+                      ? "text-accent-light bg-accent/10"
+                      : "text-gray-300 hover:text-white hover:bg-card-hover"
                   }`}
                 >
                   {link.label}
                 </Link>
               ))}
             </div>
-            <div className="pt-2 mt-2 border-t border-[#1e1e3a]">
+            <div className="pt-2 mt-2 border-t border-line">
               <p className="text-[10px] uppercase tracking-wider text-gray-600 px-3 pb-1 font-semibold">Admin</p>
               {adminLinks.map((link) => (
                 <Link
@@ -385,22 +346,18 @@ export default function Navbar() {
                   onClick={() => setOpen(false)}
                   className={`block text-sm px-3 py-2.5 rounded-lg transition-colors ${
                     isActive(link.href)
-                      ? "text-[#6dd5ed] bg-[#2193b0]/10"
-                      : "text-gray-400 hover:text-white hover:bg-[#1e1e3a]"
+                      ? "text-accent-light bg-accent/10"
+                      : "text-gray-400 hover:text-white hover:bg-card-hover"
                   }`}
                 >
                   {link.label}
                 </Link>
               ))}
             </div>
-            <div className="pt-2 mt-2 border-t border-[#1e1e3a] px-3">
-              <Link
-                href="/en/login"
-                onClick={() => setOpen(false)}
-                className="block text-center text-sm px-4 py-2.5 rounded-lg bg-[#2193b0] hover:bg-[#1a7a94] text-white transition-colors"
-              >
+            <div className="pt-2 mt-2 border-t border-line px-3">
+              <Button variant="primary" size="md" href="/en/login" className="w-full py-2.5">
                 Login
-              </Link>
+              </Button>
             </div>
           </div>
         </div>

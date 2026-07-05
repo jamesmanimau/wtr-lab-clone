@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { novels, adminRequests } from "@/lib/api";
+import Card from "@/components/ui/Card";
 
 interface RequestItem {
   ID: number;
@@ -67,14 +68,14 @@ export default function AdminRequestsPage() {
     }
   }
 
-  if (loading) return <div className="max-w-4xl mx-auto px-4 py-8"><p className="text-[#2193b0]">Loading...</p></div>;
+  if (loading) return <div className="max-w-4xl mx-auto px-4 py-8"><p className="text-accent">Loading...</p></div>;
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold text-white mb-6">Review Requests</h1>
 
       {error && <p className="text-sm text-red-400 mb-4">{error}</p>}
-      {actionMsg && <p className="text-sm text-[#6dd5ed] mb-4">{actionMsg}</p>}
+      {actionMsg && <p className="text-sm text-accent-light mb-4">{actionMsg}</p>}
 
       <p className="text-xs text-gray-500 mb-4">
         Note: Requests currently display as mock data since there is no dedicated GET /requests endpoint.
@@ -83,12 +84,12 @@ export default function AdminRequestsPage() {
 
       <div className="space-y-3">
         {requests.map((req) => (
-          <div key={req.ID} className="p-4 bg-[#12122a] border border-[#1e1e3a] rounded-xl">
+          <Card key={req.ID}>
             <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
               <div className="flex-1 min-w-0">
                 <h3 className="text-sm font-semibold text-white">{req.NovelTitle}</h3>
                 {req.NovelURL && (
-                  <a href={req.NovelURL} target="_blank" rel="noopener noreferrer" className="text-xs text-[#2193b0] hover:underline truncate block mt-0.5">
+                  <a href={req.NovelURL} target="_blank" rel="noopener noreferrer" className="text-xs text-accent hover:underline truncate block mt-0.5">
                     {req.NovelURL}
                   </a>
                 )}
@@ -127,7 +128,7 @@ export default function AdminRequestsPage() {
                 </span>
               )}
             </div>
-          </div>
+          </Card>
         ))}
       </div>
 

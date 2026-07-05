@@ -1,5 +1,6 @@
 "use client";
 
+import Card from "@/components/ui/Card";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -39,9 +40,9 @@ export default function ProfilePage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="bg-[#12122a] border border-[#1e1e3a] rounded-xl p-6 mb-6">
+      <Card className="p-6 mb-6">
         <div className="flex items-center gap-5">
-          <div className="w-20 h-20 rounded-full bg-[#1e1e3a] flex items-center justify-center text-2xl font-bold text-gray-500 shrink-0 border-2 border-violet-800/30">
+          <div className="w-20 h-20 rounded-full bg-card-hover flex items-center justify-center text-2xl font-bold text-gray-500 shrink-0 border-2 border-violet-800/30">
             {profile.username[0]?.toUpperCase() || "?"}
           </div>
           <div className="min-w-0 flex-1">
@@ -53,9 +54,9 @@ export default function ProfilePage() {
             <p className="text-xs text-gray-600 mt-1">Joined {joined}</p>
           </div>
         </div>
-      </div>
+      </Card>
 
-      <div className="flex gap-4 border-b border-[#1e1e3a] mb-6">
+      <div className="flex gap-4 border-b border-line mb-6">
         {tabs.map((tab) => (
           <button key={tab} onClick={() => setActiveTab(tab)}
             className={`pb-3 text-sm font-medium capitalize transition-colors border-b-2 ${
@@ -66,11 +67,11 @@ export default function ProfilePage() {
 
       {activeTab === "overview" && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Link href="/en/profile/vote-serie" className="p-4 bg-[#12122a] border border-[#1e1e3a] rounded-xl hover:border-violet-800/40 transition-colors group">
+          <Link href="/en/profile/vote-serie" className="p-4 bg-card border border-line rounded-xl hover:border-violet-800/40 transition-colors group">
             <p className="text-sm font-medium text-white group-hover:text-violet-400 transition-colors">Vote Novels</p>
             <p className="text-xs text-gray-500 mt-1">Vote for your favorite novels</p>
           </Link>
-          <Link href="/en/profile/request-serie" className="p-4 bg-[#12122a] border border-[#1e1e3a] rounded-xl hover:border-violet-800/40 transition-colors group">
+          <Link href="/en/profile/request-serie" className="p-4 bg-card border border-line rounded-xl hover:border-violet-800/40 transition-colors group">
             <p className="text-sm font-medium text-white group-hover:text-violet-400 transition-colors">Request Novels</p>
             <p className="text-xs text-gray-500 mt-1">Request new novels to be translated</p>
           </Link>

@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { novels, genres as genresApi } from "@/lib/api";
+import { formatViews, statusColor } from "@/lib/utils";
 
 interface Genre {
   ID: number;
@@ -148,22 +149,6 @@ const FALLBACK_NOVELS: Novel[] = [
 ];
 
 const ITEMS_PER_PAGE = 20;
-
-function formatViews(views: number): string {
-  if (views >= 1000000) return (views / 1000000).toFixed(1) + "M";
-  if (views >= 1000) return (views / 1000).toFixed(1) + "K";
-  return String(views);
-}
-
-function statusColor(status: string): string {
-  switch (status) {
-    case "ongoing": return "bg-green-900/40 text-green-400";
-    case "completed": return "bg-blue-900/40 text-blue-400";
-    case "hiatus": return "bg-yellow-900/40 text-yellow-400";
-    case "dropped": return "bg-red-900/40 text-red-400";
-    default: return "bg-gray-900/40 text-gray-400";
-  }
-}
 
 export default function NovelFinderPage() {
   const [query, setQuery] = useState("");
@@ -349,8 +334,8 @@ export default function NovelFinderPage() {
       <h1 className="text-2xl font-bold text-white mb-6">Novel Finder</h1>
 
       {/* Search bar */}
-      <div className="flex items-center overflow-hidden rounded-xl border border-[#2a2a4a] bg-[#12122a]">
-        <span className="border-r border-[#2a2a4a] bg-[#1e1e3a] px-4 py-3 text-sm font-semibold text-gray-400">
+      <div className="flex items-center overflow-hidden rounded-xl border border-line-light bg-card">
+        <span className="border-r border-line-light bg-card-hover px-4 py-3 text-sm font-semibold text-gray-400">
           Search
         </span>
         <input
@@ -368,7 +353,7 @@ export default function NovelFinderPage() {
           type="checkbox"
           checked={descOnly}
           onChange={(e) => setDescOnly(e.target.checked)}
-          className="h-4 w-4 rounded border-[#2a2a4a] accent-[#2193b0]"
+          className="h-4 w-4 rounded border-line-light accent-accent"
         />
         Description only search
       </label>
@@ -378,14 +363,14 @@ export default function NovelFinderPage() {
         <button
           type="button"
           onClick={() => setShowFilters((v) => !v)}
-          className="flex items-center gap-2 rounded-lg border border-[#2a2a4a] bg-[#12122a] px-4 py-2 text-sm font-medium text-gray-300 transition-colors hover:bg-[#1e1e3a]"
+          className="flex items-center gap-2 rounded-lg border border-line-light bg-card px-4 py-2 text-sm font-medium text-gray-300 transition-colors hover:bg-card-hover"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
           </svg>
           {showFilters ? "Hide Filters" : "Show Filters"}
           {activeCount > 0 && (
-            <span className="ml-1 rounded-full bg-[#2193b0] px-2 py-0.5 text-xs font-bold text-white">
+            <span className="ml-1 rounded-full bg-accent px-2 py-0.5 text-xs font-bold text-white">
               {activeCount}
             </span>
           )}
@@ -394,12 +379,12 @@ export default function NovelFinderPage() {
 
       {/* Filters panel */}
       {showFilters && (
-        <div className="mt-4 space-y-5 rounded-xl border border-[#1e1e3a] bg-[#12122a] p-4 sm:p-6">
+        <div className="mt-4 space-y-5 rounded-xl border border-line bg-card p-4 sm:p-6">
           {/* Sort + order */}
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <label className="mb-1.5 block text-sm text-gray-500">Sort by</label>
-              <div className="flex flex-nowrap gap-1 bg-[#1e1e3a] rounded-lg p-0.5 border border-[#2a2a4a] overflow-x-auto scrollbar-hide">
+              <div className="flex flex-nowrap gap-1 bg-card-hover rounded-lg p-0.5 border border-line-light overflow-x-auto scrollbar-hide">
                 {SORT_OPTIONS.map((o) => (
                   <button
                     key={o.value}
@@ -407,7 +392,7 @@ export default function NovelFinderPage() {
                     onClick={() => setSort(o.value)}
                     className={`shrink-0 px-3 py-1.5 text-xs rounded-md transition-colors ${
                       sort === o.value
-                        ? "bg-[#2193b0] text-white"
+                        ? "bg-accent text-white"
                         : "text-gray-400 hover:text-white"
                     }`}
                   >
@@ -418,7 +403,7 @@ export default function NovelFinderPage() {
             </div>
             <div>
               <label className="mb-1.5 block text-sm text-gray-500">Order</label>
-              <div className="flex bg-[#1e1e3a] rounded-lg p-0.5 border border-[#2a2a4a] w-fit">
+              <div className="flex bg-card-hover rounded-lg p-0.5 border border-line-light w-fit">
                 {(["desc", "asc"] as const).map((o) => (
                   <button
                     key={o}
@@ -426,7 +411,7 @@ export default function NovelFinderPage() {
                     onClick={() => setOrder(o)}
                     className={`px-4 py-1.5 text-xs rounded-md transition-colors ${
                       order === o
-                        ? "bg-[#2193b0] text-white"
+                        ? "bg-accent text-white"
                         : "text-gray-400 hover:text-white"
                     }`}
                   >
@@ -440,7 +425,7 @@ export default function NovelFinderPage() {
           {/* Status */}
           <div>
             <label className="mb-1.5 block text-sm text-gray-500">Status</label>
-            <div className="flex flex-wrap gap-1 bg-[#1e1e3a] rounded-lg p-0.5 border border-[#2a2a4a] w-fit">
+            <div className="flex flex-wrap gap-1 bg-card-hover rounded-lg p-0.5 border border-line-light w-fit">
               {STATUS_OPTIONS.map((o) => (
                 <button
                   key={o.value}
@@ -448,7 +433,7 @@ export default function NovelFinderPage() {
                   onClick={() => setStatus(o.value)}
                   className={`px-3 py-1.5 text-xs rounded-md transition-colors capitalize ${
                     status === o.value
-                      ? "bg-[#2193b0] text-white"
+                      ? "bg-accent text-white"
                       : "text-gray-400 hover:text-white"
                   }`}
                 >
@@ -461,7 +446,7 @@ export default function NovelFinderPage() {
           {/* Release status */}
           <div>
             <label className="mb-1.5 block text-sm text-gray-500">Release Status</label>
-            <div className="flex flex-wrap gap-1 bg-[#1e1e3a] rounded-lg p-0.5 border border-[#2a2a4a] w-fit">
+            <div className="flex flex-wrap gap-1 bg-card-hover rounded-lg p-0.5 border border-line-light w-fit">
               {RELEASE_OPTIONS.map((o) => (
                 <button
                   key={o.value}
@@ -469,7 +454,7 @@ export default function NovelFinderPage() {
                   onClick={() => setRelease(o.value)}
                   className={`px-3 py-1.5 text-xs rounded-md transition-colors ${
                     release === o.value
-                      ? "bg-[#2193b0] text-white"
+                      ? "bg-accent text-white"
                       : "text-gray-400 hover:text-white"
                   }`}
                 >
@@ -487,7 +472,7 @@ export default function NovelFinderPage() {
               <select
                 value={minChapters}
                 onChange={(e) => setMinChapters(Number(e.target.value))}
-                className="rounded-lg border border-[#2a2a4a] bg-[#1e1e3a] px-3 py-2.5 text-sm text-gray-200 outline-none focus:border-[#2193b0]"
+                className="rounded-lg border border-line-light bg-card-hover px-3 py-2.5 text-sm text-gray-200 outline-none focus:border-accent"
               >
                 {CHAPTER_OPTIONS.map((o) => (
                   <option key={o.value} value={o.value}>{o.label}</option>
@@ -496,7 +481,7 @@ export default function NovelFinderPage() {
               <select
                 value={minRating}
                 onChange={(e) => setMinRating(Number(e.target.value))}
-                className="rounded-lg border border-[#2a2a4a] bg-[#1e1e3a] px-3 py-2.5 text-sm text-gray-200 outline-none focus:border-[#2193b0]"
+                className="rounded-lg border border-line-light bg-card-hover px-3 py-2.5 text-sm text-gray-200 outline-none focus:border-accent"
               >
                 {RATING_OPTIONS.map((o) => (
                   <option key={o.value} value={o.value}>{o.label}</option>
@@ -505,7 +490,7 @@ export default function NovelFinderPage() {
               <select
                 value={minReviews}
                 onChange={(e) => setMinReviews(Number(e.target.value))}
-                className="rounded-lg border border-[#2a2a4a] bg-[#1e1e3a] px-3 py-2.5 text-sm text-gray-200 outline-none focus:border-[#2193b0]"
+                className="rounded-lg border border-line-light bg-card-hover px-3 py-2.5 text-sm text-gray-200 outline-none focus:border-accent"
               >
                 {REVIEW_OPTIONS.map((o) => (
                   <option key={o.value} value={o.value}>{o.label}</option>
@@ -518,7 +503,7 @@ export default function NovelFinderPage() {
           <div>
             <div className="mb-2 flex items-center justify-between gap-3">
               <label className="text-sm text-gray-500">Genres</label>
-              <div className="flex bg-[#1e1e3a] rounded-lg p-0.5 border border-[#2a2a4a]">
+              <div className="flex bg-card-hover rounded-lg p-0.5 border border-line-light">
                 {(["or", "and"] as const).map((m) => (
                   <button
                     key={m}
@@ -526,7 +511,7 @@ export default function NovelFinderPage() {
                     onClick={() => setGenreMode(m)}
                     className={`px-3 py-1 text-xs rounded-md transition-colors uppercase ${
                       genreMode === m
-                        ? "bg-[#2193b0] text-white"
+                        ? "bg-accent text-white"
                         : "text-gray-400 hover:text-white"
                     }`}
                   >
@@ -545,7 +530,7 @@ export default function NovelFinderPage() {
                           type="checkbox"
                           checked={selectedGenres.includes(genre.slug)}
                           onChange={() => toggleGenre(genre.slug)}
-                          className="h-4 w-4 rounded border-[#2a2a4a] accent-[#2193b0]"
+                          className="h-4 w-4 rounded border-line-light accent-accent"
                         />
                         {genre.name}
                       </label>
@@ -560,7 +545,7 @@ export default function NovelFinderPage() {
           <div>
             <div className="mb-2 flex items-center justify-between gap-3">
               <label className="text-sm text-gray-500">Tags</label>
-              <div className="flex bg-[#1e1e3a] rounded-lg p-0.5 border border-[#2a2a4a]">
+              <div className="flex bg-card-hover rounded-lg p-0.5 border border-line-light">
                 {(["or", "and"] as const).map((m) => (
                   <button
                     key={m}
@@ -568,7 +553,7 @@ export default function NovelFinderPage() {
                     onClick={() => setTagMode(m)}
                     className={`px-3 py-1 text-xs rounded-md transition-colors uppercase ${
                       tagMode === m
-                        ? "bg-[#2193b0] text-white"
+                        ? "bg-accent text-white"
                         : "text-gray-400 hover:text-white"
                     }`}
                   >
@@ -579,14 +564,14 @@ export default function NovelFinderPage() {
             </div>
             <div className="relative">
               <div
-                className={`flex min-h-[44px] w-full flex-wrap items-center gap-2 rounded-lg border bg-[#1e1e3a] px-3 py-2 ${
-                  tagOpen ? "border-[#2193b0]" : "border-[#2a2a4a]"
+                className={`flex min-h-[44px] w-full flex-wrap items-center gap-2 rounded-lg border bg-card-hover px-3 py-2 ${
+                  tagOpen ? "border-accent" : "border-line-light"
                 }`}
               >
                 {tags.map((tag) => (
                   <span
                     key={tag}
-                    className="inline-flex items-center gap-1 rounded-md bg-[#2a2a4a] px-2 py-0.5 text-xs font-medium text-gray-300"
+                    className="inline-flex items-center gap-1 rounded-md bg-line-light px-2 py-0.5 text-xs font-medium text-gray-300"
                   >
                     {tag}
                     <button
@@ -627,8 +612,8 @@ export default function NovelFinderPage() {
                     className="fixed inset-0 z-10 cursor-default"
                     onClick={() => setTagOpen(false)}
                   />
-                  <div className="absolute z-20 mt-2 w-full overflow-hidden rounded-xl border border-[#2a2a4a] bg-[#12122a] shadow-lg">
-                    <div className="flex flex-wrap gap-2 border-b border-[#1e1e3a] p-3">
+                  <div className="absolute z-20 mt-2 w-full overflow-hidden rounded-xl border border-line-light bg-card shadow-lg">
+                    <div className="flex flex-wrap gap-2 border-b border-line p-3">
                       {(["All", ...TAG_CATEGORIES] as const).map((cat) => (
                         <button
                           key={cat}
@@ -636,8 +621,8 @@ export default function NovelFinderPage() {
                           onClick={() => setTagCategory(cat)}
                           className={`rounded-lg px-3 py-1 text-xs font-medium transition-colors ${
                             tagCategory === cat
-                              ? "bg-[#2193b0] text-white"
-                              : "bg-[#1e1e3a] text-gray-400 hover:text-white"
+                              ? "bg-accent text-white"
+                              : "bg-card-hover text-gray-400 hover:text-white"
                           }`}
                         >
                           {cat}
@@ -657,8 +642,8 @@ export default function NovelFinderPage() {
                               onClick={() => toggleTag(tag.name)}
                               className={`flex w-full items-center justify-between px-4 py-2.5 text-left text-sm transition-colors ${
                                 active
-                                  ? "bg-[#2193b0]/10 text-[#6dd5ed]"
-                                  : "text-gray-300 hover:bg-[#1e1e3a]"
+                                  ? "bg-accent/10 text-accent-light"
+                                  : "text-gray-300 hover:bg-card-hover"
                               }`}
                             >
                               <span>{tag.name}</span>
@@ -679,8 +664,8 @@ export default function NovelFinderPage() {
             <label className="mb-2 block text-xs font-medium text-red-400">Excluded Tags</label>
             <div className="relative">
               <div
-                className={`flex min-h-[44px] w-full flex-wrap items-center gap-2 rounded-lg border bg-[#1e1e3a] px-3 py-2 ${
-                  exTagOpen ? "border-[#2193b0]" : "border-red-900/40"
+                className={`flex min-h-[44px] w-full flex-wrap items-center gap-2 rounded-lg border bg-card-hover px-3 py-2 ${
+                  exTagOpen ? "border-accent" : "border-red-900/40"
                 }`}
               >
                 {excludedTags.map((tag) => (
@@ -727,8 +712,8 @@ export default function NovelFinderPage() {
                     className="fixed inset-0 z-10 cursor-default"
                     onClick={() => setExTagOpen(false)}
                   />
-                  <div className="absolute z-20 mt-2 w-full overflow-hidden rounded-xl border border-[#2a2a4a] bg-[#12122a] shadow-lg">
-                    <div className="flex flex-wrap gap-2 border-b border-[#1e1e3a] p-3">
+                  <div className="absolute z-20 mt-2 w-full overflow-hidden rounded-xl border border-line-light bg-card shadow-lg">
+                    <div className="flex flex-wrap gap-2 border-b border-line p-3">
                       {(["All", ...TAG_CATEGORIES] as const).map((cat) => (
                         <button
                           key={cat}
@@ -736,8 +721,8 @@ export default function NovelFinderPage() {
                           onClick={() => setExTagCategory(cat)}
                           className={`rounded-lg px-3 py-1 text-xs font-medium transition-colors ${
                             exTagCategory === cat
-                              ? "bg-[#2193b0] text-white"
-                              : "bg-[#1e1e3a] text-gray-400 hover:text-white"
+                              ? "bg-accent text-white"
+                              : "bg-card-hover text-gray-400 hover:text-white"
                           }`}
                         >
                           {cat}
@@ -758,7 +743,7 @@ export default function NovelFinderPage() {
                               className={`flex w-full items-center justify-between px-4 py-2.5 text-left text-sm transition-colors ${
                                 active
                                   ? "bg-red-900/20 text-red-400"
-                                  : "text-gray-300 hover:bg-[#1e1e3a]"
+                                  : "text-gray-300 hover:bg-card-hover"
                               }`}
                             >
                               <span>{tag.name}</span>
@@ -775,11 +760,11 @@ export default function NovelFinderPage() {
           </div>
 
           {/* Actions */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 border-t border-[#1e1e3a] pt-4">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 border-t border-line pt-4">
             <button
               type="button"
               onClick={clearAll}
-              className="flex items-center justify-center gap-2 rounded-lg border border-[#2a2a4a] px-5 py-2.5 text-sm font-medium text-gray-300 transition-colors hover:bg-[#1e1e3a]"
+              className="flex items-center justify-center gap-2 rounded-lg border border-line-light px-5 py-2.5 text-sm font-medium text-gray-300 transition-colors hover:bg-card-hover"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -793,7 +778,7 @@ export default function NovelFinderPage() {
                 doSearch(1);
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
-              className="rounded-lg bg-[#2193b0] px-6 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 text-center"
+              className="rounded-lg bg-accent px-6 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 text-center"
             >
               Apply Filters
             </button>
@@ -806,7 +791,7 @@ export default function NovelFinderPage() {
         <div className="mt-8 mb-4 flex items-center justify-between">
           <p className="text-sm text-gray-500">
             {loading ? (
-              <span className="text-[#2193b0]">Searching...</span>
+              <span className="text-accent">Searching...</span>
             ) : (
               <>
                 <span className="font-bold text-white">{data.length}</span> novel{data.length !== 1 ? "s" : ""} found
@@ -825,7 +810,7 @@ export default function NovelFinderPage() {
       {searched && !loading && (
         <>
           {data.length === 0 ? (
-            <div className="rounded-xl border border-dashed border-[#2a2a4a] bg-[#12122a] py-16 text-center">
+            <div className="rounded-xl border border-dashed border-line-light bg-card py-16 text-center">
               <svg className="w-16 h-16 mx-auto text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
@@ -839,9 +824,9 @@ export default function NovelFinderPage() {
                   <Link
                     key={novel.ID}
                     href={`/en/novel/${novel.ID}/${novel.Slug}`}
-                    className="group flex w-full flex-col overflow-hidden rounded-xl border border-[#1e1e3a] bg-[#12122a] transition-shadow hover:shadow-md hover:border-[#2193b0]/40"
+                    className="group flex w-full flex-col overflow-hidden rounded-xl border border-line bg-card transition-shadow hover:shadow-md hover:border-accent/40"
                   >
-                    <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#1e1e3a]">
+                    <div className="relative aspect-[3/4] w-full overflow-hidden bg-card-hover">
                       {novel.CoverURL ? (
                         <img
                           src={novel.CoverURL}
@@ -857,11 +842,11 @@ export default function NovelFinderPage() {
                       )}
                     </div>
                     <div className="flex flex-1 flex-col gap-2 p-3">
-                      <h3 className="line-clamp-2 text-sm font-bold leading-tight text-white group-hover:text-[#6dd5ed] transition-colors">
+                      <h3 className="line-clamp-2 text-sm font-bold leading-tight text-white group-hover:text-accent-light transition-colors">
                         {novel.Title}
                       </h3>
                       <div className="flex items-center justify-between gap-2">
-                        <span className="inline-flex items-center rounded-md border border-[#2a2a4a] px-2 py-0.5 text-[10px] font-medium text-gray-400 capitalize">
+                        <span className="inline-flex items-center rounded-md border border-line-light px-2 py-0.5 text-[10px] font-medium text-gray-400 capitalize">
                           {novel.Genres?.[0]?.Name || novel.Genres?.[0]?.Slug || "General"}
                         </span>
                         <span className="text-xs font-semibold text-gray-300">{novel.Chapters} Ch</span>
@@ -895,39 +880,39 @@ export default function NovelFinderPage() {
                   <button
                     onClick={() => doSearch(Math.max(1, page - 1))}
                     disabled={page <= 1}
-                    className="px-3 py-1.5 text-xs rounded-lg bg-[#1e1e3a] text-gray-300 hover:bg-[#2a2a4a] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                    className="px-3 py-1.5 text-xs rounded-lg bg-card-hover text-gray-300 hover:bg-line-light disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                   >
                     Previous
                   </button>
                   {page > 2 && (
-                    <button onClick={() => doSearch(1)} className="px-3 py-1.5 text-xs rounded-lg bg-[#1e1e3a] text-gray-400 hover:text-white transition-colors">
+                    <button onClick={() => doSearch(1)} className="px-3 py-1.5 text-xs rounded-lg bg-card-hover text-gray-400 hover:text-white transition-colors">
                       1
                     </button>
                   )}
                   {page > 3 && <span className="text-gray-600 text-xs">...</span>}
                   {page > 1 && (
-                    <button onClick={() => doSearch(page - 1)} className="px-3 py-1.5 text-xs rounded-lg bg-[#1e1e3a] text-gray-400 hover:text-white transition-colors">
+                    <button onClick={() => doSearch(page - 1)} className="px-3 py-1.5 text-xs rounded-lg bg-card-hover text-gray-400 hover:text-white transition-colors">
                       {page - 1}
                     </button>
                   )}
-                  <span className="px-3 py-1.5 text-xs rounded-lg bg-[#2193b0] text-white font-medium">
+                  <span className="px-3 py-1.5 text-xs rounded-lg bg-accent text-white font-medium">
                     {page}
                   </span>
                   {page < totalPages && (
-                    <button onClick={() => doSearch(page + 1)} className="px-3 py-1.5 text-xs rounded-lg bg-[#1e1e3a] text-gray-400 hover:text-white transition-colors">
+                    <button onClick={() => doSearch(page + 1)} className="px-3 py-1.5 text-xs rounded-lg bg-card-hover text-gray-400 hover:text-white transition-colors">
                       {page + 1}
                     </button>
                   )}
                   {page < totalPages - 2 && <span className="text-gray-600 text-xs">...</span>}
                   {page < totalPages - 1 && (
-                    <button onClick={() => doSearch(totalPages)} className="px-3 py-1.5 text-xs rounded-lg bg-[#1e1e3a] text-gray-400 hover:text-white transition-colors">
+                    <button onClick={() => doSearch(totalPages)} className="px-3 py-1.5 text-xs rounded-lg bg-card-hover text-gray-400 hover:text-white transition-colors">
                       {totalPages}
                     </button>
                   )}
                   <button
                     onClick={() => doSearch(Math.min(totalPages, page + 1))}
                     disabled={page >= totalPages}
-                    className="px-3 py-1.5 text-xs rounded-lg bg-[#1e1e3a] text-gray-300 hover:bg-[#2a2a4a] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                    className="px-3 py-1.5 text-xs rounded-lg bg-card-hover text-gray-300 hover:bg-line-light disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                   >
                     Next
                   </button>

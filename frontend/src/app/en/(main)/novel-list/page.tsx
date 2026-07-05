@@ -108,7 +108,7 @@ export default function NovelListPage() {
           <select
             value={sort}
             onChange={(e) => { setSort(e.target.value); }}
-            className="bg-[#1e1e3a] text-sm text-gray-200 px-3 py-2 rounded-lg border border-[#2a2a4a] outline-none"
+            className="bg-card-hover text-sm text-gray-200 px-3 py-2 rounded-lg border border-line-light outline-none"
           >
             {SORT_OPTIONS.map((o) => (
               <option key={o.value} value={o.value}>{o.label}</option>
@@ -121,7 +121,7 @@ export default function NovelListPage() {
           <select
             value={order}
             onChange={(e) => { setOrder(e.target.value); }}
-            className="bg-[#1e1e3a] text-sm text-gray-200 px-3 py-2 rounded-lg border border-[#2a2a4a] outline-none"
+            className="bg-card-hover text-sm text-gray-200 px-3 py-2 rounded-lg border border-line-light outline-none"
           >
             <option value="desc">Descending</option>
             <option value="asc">Ascending</option>
@@ -130,14 +130,14 @@ export default function NovelListPage() {
 
         <div className="flex items-center gap-2">
           <span className="text-sm text-gray-400">Status</span>
-          <div className="flex bg-[#1e1e3a] rounded-lg p-0.5 border border-[#2a2a4a]">
+          <div className="flex bg-card-hover rounded-lg p-0.5 border border-line-light">
             {STATUS_OPTIONS.map((s) => (
               <button
                 key={s}
                 onClick={() => { setStatus(s === "All" ? "" : s.toLowerCase()); }}
                 className={`px-3 py-1.5 text-xs rounded-md transition-colors ${
                   (s === "All" && !status) || s.toLowerCase() === status
-                    ? "bg-[#2193b0] text-white"
+                    ? "bg-accent text-white"
                     : "text-gray-400 hover:text-white"
                 }`}
               >
@@ -151,16 +151,16 @@ export default function NovelListPage() {
           <span className="text-sm text-gray-400 mr-2">Genre</span>
           <button
             onClick={() => setShowGenreDropdown(!showGenreDropdown)}
-            className="bg-[#1e1e3a] text-sm text-gray-200 px-3 py-2 rounded-lg border border-[#2a2a4a] outline-none min-w-[120px] text-left capitalize"
+            className="bg-card-hover text-sm text-gray-200 px-3 py-2 rounded-lg border border-line-light outline-none min-w-[120px] text-left capitalize"
           >
             {genre || "All"}
           </button>
           {showGenreDropdown && (
-            <div className="absolute top-full mt-1 left-0 z-50 bg-[#1e1e3a] border border-[#2a2a4a] rounded-xl p-2 max-h-60 overflow-y-auto w-48 shadow-xl">
+            <div className="absolute top-full mt-1 left-0 z-50 bg-card-hover border border-line-light rounded-xl p-2 max-h-60 overflow-y-auto w-48 shadow-xl">
               <button
                 onClick={() => { setGenre(""); setShowGenreDropdown(false); }}
                 className={`block w-full text-left text-sm px-3 py-1.5 rounded ${
-                  !genre ? "text-[#2193b0]" : "text-gray-300 hover:text-white"
+                  !genre ? "text-accent" : "text-gray-300 hover:text-white"
                 }`}
               >
                 All
@@ -170,7 +170,7 @@ export default function NovelListPage() {
                   key={g}
                   onClick={() => { setGenre(g); setShowGenreDropdown(false); }}
                   className={`block w-full text-left text-sm px-3 py-1.5 rounded capitalize ${
-                    genre === g ? "text-[#2193b0]" : "text-gray-300 hover:text-white"
+                    genre === g ? "text-accent" : "text-gray-300 hover:text-white"
                   }`}
                 >
                   {g.replace(/-/g, " ")}
@@ -180,7 +180,7 @@ export default function NovelListPage() {
           )}
         </div>
 
-        {loading && <span className="text-sm text-[#2193b0] ml-2">Loading...</span>}
+        {loading && <span className="text-sm text-accent ml-2">Loading...</span>}
       </div>
 
       {/* Results count */}
@@ -192,9 +192,9 @@ export default function NovelListPage() {
           <Link
             key={novel.ID}
             href={`/en/novel/${novel.ID}/${novel.Slug}`}
-            className="flex gap-3 p-3 bg-[#12122a] border border-[#1e1e3a] rounded-xl hover:border-[#2193b0]/40 transition-colors group"
+            className="flex gap-3 p-3 bg-card border border-line rounded-xl hover:border-accent/40 transition-colors group"
           >
-            <div className="w-16 h-24 sm:w-20 sm:h-28 rounded-lg bg-[#1e1e3a] border border-[#2a2a4a] flex-shrink-0 flex items-center justify-center overflow-hidden">
+            <div className="w-16 h-24 sm:w-20 sm:h-28 rounded-lg bg-card-hover border border-line-light flex-shrink-0 flex items-center justify-center overflow-hidden">
               {novel.CoverURL ? (
                 <img src={novel.CoverURL} alt="" className="w-full h-full object-cover" />
               ) : (
@@ -204,7 +204,7 @@ export default function NovelListPage() {
               )}
             </div>
             <div className="min-w-0 flex-1">
-              <h3 className="text-sm font-semibold text-white group-hover:text-[#6dd5ed] transition-colors line-clamp-2 leading-snug">
+              <h3 className="text-sm font-semibold text-white group-hover:text-accent-light transition-colors line-clamp-2 leading-snug">
                 {novel.Title}
               </h3>
               <p className="text-[10px] text-gray-500 mt-0.5 truncate">{novel.AltTitle}</p>
@@ -225,7 +225,7 @@ export default function NovelListPage() {
               </div>
               <div className="flex flex-wrap gap-1 mt-1">
                 {novel.Genres.slice(0, 3).map((g) => (
-                  <span key={g.ID} className="text-[9px] px-1.5 py-0.5 rounded-full bg-[#2193b0]/10 text-[#6dd5ed]/80 border border-[#2193b0]/20">
+                  <span key={g.ID} className="text-[9px] px-1.5 py-0.5 rounded-full bg-accent/10 text-accent-light/80 border border-accent/20">
                     {g.Name}
                   </span>
                 ))}
@@ -240,33 +240,33 @@ export default function NovelListPage() {
         <button
           onClick={() => fetchData(Math.max(1, page - 1))}
           disabled={page <= 1}
-          className="px-3 py-1.5 text-sm rounded-lg bg-[#1e1e3a] text-gray-300 hover:bg-[#2a2a4a] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="px-3 py-1.5 text-sm rounded-lg bg-card-hover text-gray-300 hover:bg-line-light disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           Previous
         </button>
 
         {page > 2 && (
-          <button onClick={() => fetchData(1)} className="px-3 py-1.5 text-sm rounded-lg bg-[#1e1e3a] text-gray-400 hover:text-white transition-colors">
+          <button onClick={() => fetchData(1)} className="px-3 py-1.5 text-sm rounded-lg bg-card-hover text-gray-400 hover:text-white transition-colors">
             1
           </button>
         )}
         {page > 3 && <span className="text-gray-600 text-sm">...</span>}
         {page > 1 && (
-          <button onClick={() => fetchData(page - 1)} className="px-3 py-1.5 text-sm rounded-lg bg-[#1e1e3a] text-gray-400 hover:text-white transition-colors">
+          <button onClick={() => fetchData(page - 1)} className="px-3 py-1.5 text-sm rounded-lg bg-card-hover text-gray-400 hover:text-white transition-colors">
             {page - 1}
           </button>
         )}
-        <span className="px-3 py-1.5 text-sm rounded-lg bg-[#2193b0] text-white font-medium">
+        <span className="px-3 py-1.5 text-sm rounded-lg bg-accent text-white font-medium">
           {page}
         </span>
         {page < totalPages && (
-          <button onClick={() => fetchData(page + 1)} className="px-3 py-1.5 text-sm rounded-lg bg-[#1e1e3a] text-gray-400 hover:text-white transition-colors">
+          <button onClick={() => fetchData(page + 1)} className="px-3 py-1.5 text-sm rounded-lg bg-card-hover text-gray-400 hover:text-white transition-colors">
             {page + 1}
           </button>
         )}
         {page < totalPages - 2 && <span className="text-gray-600 text-sm">...</span>}
         {page < totalPages - 1 && (
-          <button onClick={() => fetchData(totalPages)} className="px-3 py-1.5 text-sm rounded-lg bg-[#1e1e3a] text-gray-400 hover:text-white transition-colors">
+          <button onClick={() => fetchData(totalPages)} className="px-3 py-1.5 text-sm rounded-lg bg-card-hover text-gray-400 hover:text-white transition-colors">
             {totalPages}
           </button>
         )}
@@ -274,7 +274,7 @@ export default function NovelListPage() {
         <button
           onClick={() => fetchData(Math.min(totalPages, page + 1))}
           disabled={page >= totalPages}
-          className="px-3 py-1.5 text-sm rounded-lg bg-[#1e1e3a] text-gray-300 hover:bg-[#2a2a4a] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="px-3 py-1.5 text-sm rounded-lg bg-card-hover text-gray-300 hover:bg-line-light disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           Next
         </button>

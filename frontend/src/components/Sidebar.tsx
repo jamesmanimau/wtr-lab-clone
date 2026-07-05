@@ -3,43 +3,8 @@
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
-
-const sections = [
-  {
-    title: "Browse",
-    links: [
-      { href: "/en/novel-finder", label: "Finder" },
-      { href: "/en/novel-list", label: "Novels" },
-      { href: "/en/ranking/daily", label: "Ranking" },
-      { href: "/en/leaderboard", label: "Leaderboard" },
-      { href: "/en/library", label: "Library" },
-    ],
-  },
-  {
-    title: "Discover",
-    links: [
-      { href: "/en/trending", label: "Trending" },
-      { href: "/en/recommendation", label: "Recommendations" },
-    ],
-  },
-  {
-    title: "Community",
-    links: [
-      { href: "/en/news", label: "News" },
-      { href: "/en/public-stats", label: "Stats" },
-      { href: "/en/profile/request-serie", label: "Request Series" },
-      { href: "/en/profile/vote-serie", label: "Vote Series" },
-    ],
-  },
-  {
-    title: "Admin",
-    links: [
-      { href: "/en/admin/import", label: "Import" },
-      { href: "/en/admin/requests", label: "Requests" },
-      { href: "/en/admin/novels", label: "Manage" },
-    ],
-  },
-];
+import { navSections as sections } from "@/lib/navigation";
+import { SearchIcon } from "@/components/ui/Icons";
 
 export default function Sidebar() {
   const [search, setSearch] = useState("");
@@ -57,11 +22,11 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="hidden lg:flex fixed left-0 top-0 h-full w-64 flex-col bg-[#12122a] border-r border-[#1e1e3a] z-50 shadow-2xl shadow-black/50">
+    <aside className="hidden lg:flex fixed left-0 top-0 h-full w-64 flex-col bg-card border-r border-line z-50 shadow-2xl shadow-black/50">
       <div className="px-6 pt-6 pb-4">
         <Link
           href="/en"
-          className="text-2xl font-bold bg-gradient-to-r from-[#2193b0] to-[#6dd5ed] bg-clip-text text-transparent"
+          className="text-2xl font-bold bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent"
         >
           WTR-LAB
         </Link>
@@ -73,15 +38,13 @@ export default function Sidebar() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search novels..."
-            className="w-full bg-[#1e1e3a] border border-[#2a2a4a] rounded-lg pl-4 pr-10 py-2 text-sm text-gray-200 outline-none focus:border-[#2193b0] transition-colors"
+            className="w-full bg-card-hover border border-line-light rounded-lg pl-4 pr-10 py-2 text-sm text-gray-200 outline-none focus:border-accent transition-colors"
           />
           <button
             type="submit"
-            className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-[#6dd5ed] transition-colors"
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-accent-light transition-colors"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
+            <SearchIcon className="w-4 h-4" />
           </button>
         </div>
       </form>
@@ -98,8 +61,8 @@ export default function Sidebar() {
                 href={link.href}
                 className={`flex items-center text-sm px-3 py-2 rounded-lg transition-colors ${
                   isActive(link.href)
-                    ? "text-[#6dd5ed] bg-[#2193b0]/10"
-                    : "text-gray-300 hover:text-white hover:bg-[#1e1e3a]"
+                    ? "text-accent-light bg-accent/10"
+                    : "text-gray-300 hover:text-white hover:bg-card-hover"
                 }`}
               >
                 {link.label}
@@ -109,10 +72,10 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      <div className="px-4 pb-6 pt-4 border-t border-[#1e1e3a]">
+      <div className="px-4 pb-6 pt-4 border-t border-line">
         <Link
           href="/en/login"
-          className="block text-center text-sm px-4 py-2.5 rounded-lg bg-[#2193b0] hover:bg-[#1a7a94] text-white transition-colors"
+          className="block text-center text-sm px-4 py-2.5 rounded-lg bg-accent hover:bg-accent-dark text-white transition-colors"
         >
           Login
         </Link>

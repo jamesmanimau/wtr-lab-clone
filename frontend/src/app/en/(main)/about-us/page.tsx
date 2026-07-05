@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Card from "@/components/ui/Card";
 
 export const metadata: Metadata = {
   title: "About Us - WTR-LAB",
@@ -18,7 +19,7 @@ export default function AboutUsPage() {
 
       <h1 className="text-3xl font-bold text-white mb-8">About Us</h1>
 
-      <div className="bg-[#12122a] border border-[#1e1e3a] rounded-xl p-8 space-y-6">
+      <Card className="p-8 space-y-6">
         <p className="text-sm text-gray-300 leading-relaxed">
           WTR-Lab is a RAW Novels translator site using automatic Machine Translation (MTL),
           so we can translate the novels faster than human translation.
@@ -38,7 +39,7 @@ export default function AboutUsPage() {
           titles. You decide what gets translated next.
         </p>
 
-        <div className="pt-4 border-t border-[#1e1e3a]">
+        <div className="pt-4 border-t border-line">
           <p className="text-sm text-gray-500">
             If you have any questions or suggestions for us, you might contact us or
             email us at{" "}
@@ -47,7 +48,7 @@ export default function AboutUsPage() {
             </a>
           </p>
         </div>
-      </div>
+      </Card>
     </div>
   );
 }

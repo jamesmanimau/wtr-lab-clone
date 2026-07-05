@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { leaderboard } from "@/lib/api";
+import Card from "@/components/ui/Card";
 
 interface User {
   ID: number;
@@ -40,7 +41,7 @@ export default function LeaderboardPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold text-white mb-6">Leaderboard</h1>
-      <div className="bg-[#12122a] border border-[#1e1e3a] rounded-xl divide-y divide-[#1e1e3a]">
+      <Card className="divide-y divide-line">
         {users.map((user, i) => (
           <Link
             key={user.ID}
@@ -50,7 +51,7 @@ export default function LeaderboardPage() {
             <span className={`text-lg font-bold w-8 text-center shrink-0 ${
               i < 3 ? medalColors[i] : "text-gray-600"
             }`}>#{i + 1}</span>
-            <div className="w-10 h-10 rounded-full bg-[#1e1e3a] flex items-center justify-center text-sm text-gray-500 shrink-0">
+            <div className="w-10 h-10 rounded-full bg-card-hover flex items-center justify-center text-sm text-gray-500 shrink-0">
               {user.Username[0].toUpperCase()}
             </div>
             <div className="min-w-0 flex-1">
@@ -59,7 +60,7 @@ export default function LeaderboardPage() {
             <span className="text-sm text-violet-400 font-medium">{user.Tickets.toLocaleString()} Tickets</span>
           </Link>
         ))}
-      </div>
+      </Card>
     </div>
   );
 }

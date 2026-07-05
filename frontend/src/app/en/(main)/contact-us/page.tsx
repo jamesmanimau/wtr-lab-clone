@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Card from "@/components/ui/Card";
 
 export const metadata: Metadata = {
   title: "Contact Us - WTR-LAB",
@@ -20,7 +21,7 @@ export default function ContactUsPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Email */}
-        <div className="bg-[#12122a] border border-[#1e1e3a] rounded-xl p-6">
+        <Card className="p-6">
           <h2 className="text-lg font-semibold text-white mb-3">Email</h2>
           <p className="text-sm text-gray-400">
             For general inquiries and support:
@@ -31,10 +32,10 @@ export default function ContactUsPage() {
           >
             admin@wtr-lab.com
           </a>
-        </div>
+        </Card>
 
         {/* Discord */}
-        <div className="bg-[#12122a] border border-[#1e1e3a] rounded-xl p-6">
+        <Card className="p-6">
           <h2 className="text-lg font-semibold text-white mb-3">Discord</h2>
           <p className="text-sm text-gray-400 mb-3">
             Join our Discord community for bug reports and discussions:
@@ -50,10 +51,10 @@ export default function ContactUsPage() {
             </svg>
             Join Discord
           </a>
-        </div>
+        </Card>
 
         {/* Patreon */}
-        <div className="bg-[#12122a] border border-[#1e1e3a] rounded-xl p-6">
+        <Card className="p-6">
           <h2 className="text-lg font-semibold text-white mb-3">Support Us</h2>
           <p className="text-sm text-gray-400 mb-3">
             Like what we do? Support us on Patreon:
@@ -69,10 +70,10 @@ export default function ContactUsPage() {
             </svg>
             Support on Patreon
           </a>
-        </div>
+        </Card>
 
         {/* Bug Reports */}
-        <div className="bg-[#12122a] border border-[#1e1e3a] rounded-xl p-6">
+        <Card className="p-6">
           <h2 className="text-lg font-semibold text-white mb-3">Bug Reports</h2>
           <p className="text-sm text-gray-400 mb-3">
             Found a bug? Please report it on our Discord server.
@@ -85,7 +86,7 @@ export default function ContactUsPage() {
           >
             discord.gg/wtrlab →
           </a>
-        </div>
+        </Card>
       </div>
     </div>
   );

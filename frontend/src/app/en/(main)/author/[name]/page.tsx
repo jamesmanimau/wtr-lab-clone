@@ -44,7 +44,7 @@ export default function AuthorPage() {
         <span className="text-sm text-gray-400">Sort:</span>
         {["newest", "rating", "chapters"].map((s) => (
           <button key={s} onClick={() => setSort(s)}
-            className={`px-3 py-1 text-xs rounded-md transition-colors ${sort === s ? "bg-violet-600 text-white" : "bg-[#1e1e3a] text-gray-400 hover:text-white"}`}
+            className={`px-3 py-1 text-xs rounded-md transition-colors ${sort === s ? "bg-violet-600 text-white" : "bg-card-hover text-gray-400 hover:text-white"}`}
           >{s.charAt(0).toUpperCase() + s.slice(1)}</button>
         ))}
       </div>

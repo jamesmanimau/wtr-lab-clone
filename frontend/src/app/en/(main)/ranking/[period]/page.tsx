@@ -57,7 +57,7 @@ export default function RankingPage() {
       <h1 className="text-2xl font-bold text-white mb-6">Novel Ranking</h1>
 
       {/* Period tabs */}
-      <div className="flex gap-1 bg-[#1e1e3a] rounded-lg p-0.5 mb-6 inline-flex">
+      <div className="flex gap-1 bg-card-hover rounded-lg p-0.5 mb-6 inline-flex">
         {periods.map((p) => (
           <Link
             key={p.key}
@@ -81,14 +81,14 @@ export default function RankingPage() {
             <Link
               key={novel.ID}
               href={`/en/novel/${novel.ID}/${novel.Slug}`}
-              className="flex items-center gap-4 p-3 rounded-xl hover:bg-[#12122a] transition-colors group"
+              className="flex items-center gap-4 p-3 rounded-xl hover:bg-card transition-colors group"
             >
               <span className={`text-xl font-bold w-8 text-center shrink-0 ${
                 i === 0 ? "text-yellow-400" : i === 1 ? "text-gray-300" : i === 2 ? "text-amber-600" : "text-gray-600"
               }`}>
                 #{i + 1}
               </span>
-              <div className="w-10 h-14 rounded bg-[#1e1e3a] flex-shrink-0 flex items-center justify-center overflow-hidden">
+              <div className="w-10 h-14 rounded bg-card-hover flex-shrink-0 flex items-center justify-center overflow-hidden">
                 {novel.CoverURL ? (
                   <img src={novel.CoverURL} alt="" className="w-full h-full object-cover" />
                 ) : (

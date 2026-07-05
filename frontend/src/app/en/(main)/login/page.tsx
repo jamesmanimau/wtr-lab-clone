@@ -41,7 +41,7 @@ export default function LoginPage() {
         </h1>
 
         {/* Tab toggle */}
-        <div className="flex bg-[#1e1e3a] rounded-lg p-0.5 mb-6">
+        <div className="flex bg-card-hover rounded-lg p-0.5 mb-6">
           <button
             onClick={() => { setMode("login"); setError(""); }}
             className={`flex-1 py-2 text-sm rounded-md transition-colors ${
@@ -60,7 +60,7 @@ export default function LoginPage() {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-[#12122a] border border-[#1e1e3a] rounded-xl p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="bg-card border border-line rounded-xl p-6 space-y-4">
           {error && (
             <div className="p-3 rounded-lg bg-red-900/30 border border-red-800/30 text-sm text-red-400">
               {error}
@@ -76,7 +76,7 @@ export default function LoginPage() {
                 required
                 minLength={3}
                 placeholder="Your username"
-                className="w-full bg-[#1e1e3a] border border-[#2a2a4a] rounded-lg px-4 py-2.5 text-sm text-gray-200 outline-none focus:border-violet-600 transition-colors"
+                className="w-full bg-card-hover border border-line-light rounded-lg px-4 py-2.5 text-sm text-gray-200 outline-none focus:border-violet-600 transition-colors"
               />
             </div>
           )}
@@ -89,7 +89,7 @@ export default function LoginPage() {
               onChange={(e) => setEmail(e.target.value)}
               required
               placeholder="your@email.com"
-              className="w-full bg-[#1e1e3a] border border-[#2a2a4a] rounded-lg px-4 py-2.5 text-sm text-gray-200 outline-none focus:border-violet-600 transition-colors"
+              className="w-full bg-card-hover border border-line-light rounded-lg px-4 py-2.5 text-sm text-gray-200 outline-none focus:border-violet-600 transition-colors"
             />
           </div>
 
@@ -102,7 +102,7 @@ export default function LoginPage() {
               required
               minLength={6}
               placeholder="••••••••"
-              className="w-full bg-[#1e1e3a] border border-[#2a2a4a] rounded-lg px-4 py-2.5 text-sm text-gray-200 outline-none focus:border-violet-600 transition-colors"
+              className="w-full bg-card-hover border border-line-light rounded-lg px-4 py-2.5 text-sm text-gray-200 outline-none focus:border-violet-600 transition-colors"
             />
           </div>
 

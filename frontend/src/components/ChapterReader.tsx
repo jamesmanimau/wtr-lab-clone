@@ -115,12 +115,12 @@ export default function ChapterReader({ chapter, novel, chapters, loading, error
     return (
       <div className="max-w-3xl mx-auto px-4 py-16">
         <div className="animate-pulse space-y-4">
-          <div className="h-5 bg-[#1e1e3a] rounded w-2/3 mx-auto" />
-          <div className="h-4 bg-[#1e1e3a] rounded w-1/3 mx-auto" />
-          <div className="h-4 bg-[#1e1e3a] rounded w-1/4 mx-auto" />
-          <div className="h-px bg-[#1e1e3a] my-8" />
+          <div className="h-5 bg-card-hover rounded w-2/3 mx-auto" />
+          <div className="h-4 bg-card-hover rounded w-1/3 mx-auto" />
+          <div className="h-4 bg-card-hover rounded w-1/4 mx-auto" />
+          <div className="h-px bg-card-hover my-8" />
           {[70, 85, 60, 90, 75, 65, 80, 55].map((w, i) => (
-            <div key={i} className="h-3 bg-[#1e1e3a] rounded" style={{ width: `${w}%` }} />
+            <div key={i} className="h-3 bg-card-hover rounded" style={{ width: `${w}%` }} />
           ))}
         </div>
       </div>
@@ -135,7 +135,7 @@ export default function ChapterReader({ chapter, novel, chapters, loading, error
         </svg>
         <h2 className="text-lg font-semibold text-gray-200 mb-2">Failed to load chapter</h2>
         <p className="text-sm text-gray-500 mb-6">{error}</p>
-        <Link href={novelHref} className="px-4 py-2 bg-[#2193b0] hover:bg-[#1a7a94] text-white text-sm rounded-lg transition-colors">
+        <Link href={novelHref} className="px-4 py-2 bg-accent hover:bg-accent-dark text-white text-sm rounded-lg transition-colors">
           Back to Novel
         </Link>
       </div>
@@ -192,7 +192,7 @@ export default function ChapterReader({ chapter, novel, chapters, loading, error
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-xs font-medium" style={{ color: siteTheme.muted }}>Speed: {speechSpeed.toFixed(1)}x</span>
-                <input type="range" min="0.5" max="2.0" step="0.1" value={speechSpeed} onChange={(e) => setSpeechSpeed(parseFloat(e.target.value))} className="w-40 accent-[#2193b0]" />
+                <input type="range" min="0.5" max="2.0" step="0.1" value={speechSpeed} onChange={(e) => setSpeechSpeed(parseFloat(e.target.value))} className="w-40 accent-accent" />
               </div>
             </div>
           </div>
@@ -257,7 +257,7 @@ export default function ChapterReader({ chapter, novel, chapters, loading, error
                 { key: "retranslate", label: "Re-translate (needs login)", icon: "M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" },
                 { key: "batch", label: "Batch Re-translate (needs login)", icon: "M4 6h16M4 10h16M4 14h16M4 18h16" },
               ].map((item) => (
-                <button key={item.key} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors hover:bg-[#1e1e3a]" style={{ color: siteTheme.text }}>
+                <button key={item.key} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors hover:bg-card-hover" style={{ color: siteTheme.text }}>
                   <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                     <path d={item.icon} />
                   </svg>
@@ -277,11 +277,11 @@ export default function ChapterReader({ chapter, novel, chapters, loading, error
       {/* Top bar: novel title */}
       <div className="sticky top-0 z-30" style={{ backgroundColor: siteTheme.card, borderBottom: `1px solid ${siteTheme.border}` }}>
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link href={novelHref} className="text-sm font-semibold truncate hover:text-[#2193b0] transition-colors" style={{ color: siteTheme.text }}>
+          <Link href={novelHref} className="text-sm font-semibold truncate hover:text-accent transition-colors" style={{ color: siteTheme.text }}>
             {novel.title}
           </Link>
           <div className="flex items-center gap-2">
-            <button onClick={() => setShowToc(!showToc)} className="px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors hover:bg-[#1e1e3a]" style={{ borderColor: siteTheme.border, color: siteTheme.text }}>
+            <button onClick={() => setShowToc(!showToc)} className="px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors hover:bg-card-hover" style={{ borderColor: siteTheme.border, color: siteTheme.text }}>
               Contents
             </button>
           </div>
@@ -293,7 +293,7 @@ export default function ChapterReader({ chapter, novel, chapters, loading, error
         <div className="max-w-3xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between gap-3">
             {prevHref ? (
-              <Link href={prevHref} className="flex items-center gap-1.5 px-4 py-2 rounded-lg border text-sm font-medium transition-colors hover:bg-[#1e1e3a]" style={{ borderColor: siteTheme.border, color: siteTheme.text }}>
+              <Link href={prevHref} className="flex items-center gap-1.5 px-4 py-2 rounded-lg border text-sm font-medium transition-colors hover:bg-card-hover" style={{ borderColor: siteTheme.border, color: siteTheme.text }}>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
                 Prev
               </Link>
@@ -305,7 +305,7 @@ export default function ChapterReader({ chapter, novel, chapters, loading, error
               <p className="text-xs" style={{ color: siteTheme.muted }}>{progress}%</p>
             </div>
             {nextHref ? (
-              <Link href={nextHref} className="flex items-center gap-1.5 px-4 py-2 rounded-lg border text-sm font-medium transition-colors hover:bg-[#1e1e3a]" style={{ borderColor: siteTheme.border, color: siteTheme.text }}>
+              <Link href={nextHref} className="flex items-center gap-1.5 px-4 py-2 rounded-lg border text-sm font-medium transition-colors hover:bg-card-hover" style={{ borderColor: siteTheme.border, color: siteTheme.text }}>
                 Next
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
               </Link>
@@ -314,7 +314,7 @@ export default function ChapterReader({ chapter, novel, chapters, loading, error
             )}
           </div>
           <div className="mt-3 h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: siteTheme.border }}>
-            <div className="h-full rounded-full bg-gradient-to-r from-[#2193b0] to-[#6dd5ed]" style={{ width: `${progress}%` }} />
+            <div className="h-full rounded-full bg-gradient-to-r from-accent to-accent-light" style={{ width: `${progress}%` }} />
           </div>
         </div>
       </div>
@@ -346,7 +346,7 @@ export default function ChapterReader({ chapter, novel, chapters, loading, error
               <h3 className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: siteTheme.muted }}>Table of Contents</h3>
               <div className="space-y-0.5">
                 {chapters.map((ch) => (
-                  <Link key={ch.number} href={`/en/novel/${novel.id}/${novel.slug}/chapter-${ch.number}`} className="flex items-center justify-between px-2 py-1.5 rounded text-xs transition-colors hover:bg-[#1e1e3a]" style={{ color: ch.number === chapter.number ? "#6dd5ed" : siteTheme.text, backgroundColor: ch.number === chapter.number ? "#1e1e3a" : "transparent" }}>
+                  <Link key={ch.number} href={`/en/novel/${novel.id}/${novel.slug}/chapter-${ch.number}`} className="flex items-center justify-between px-2 py-1.5 rounded text-xs transition-colors hover:bg-card-hover" style={{ color: ch.number === chapter.number ? "#6dd5ed" : siteTheme.text, backgroundColor: ch.number === chapter.number ? "#1e1e3a" : "transparent" }}>
                     <span className="truncate">Ch. {ch.number}{ch.title ? ` - ${ch.title}` : ""}</span>
                     {ch.createdAt && <span className="text-[10px] shrink-0 ml-2" style={{ color: siteTheme.muted }}>{new Date(ch.createdAt).toLocaleDateString()}</span>}
                   </Link>
@@ -367,7 +367,7 @@ export default function ChapterReader({ chapter, novel, chapters, loading, error
                 </div>
                 <div className="space-y-0.5">
                   {chapters.map((ch) => (
-                    <Link key={ch.number} href={`/en/novel/${novel.id}/${novel.slug}/chapter-${ch.number}`} onClick={() => setShowToc(false)} className="flex items-center justify-between px-2 py-2 rounded text-xs transition-colors hover:bg-[#1e1e3a]" style={{ color: ch.number === chapter.number ? "#6dd5ed" : siteTheme.text, backgroundColor: ch.number === chapter.number ? "#1e1e3a" : "transparent" }}>
+                    <Link key={ch.number} href={`/en/novel/${novel.id}/${novel.slug}/chapter-${ch.number}`} onClick={() => setShowToc(false)} className="flex items-center justify-between px-2 py-2 rounded text-xs transition-colors hover:bg-card-hover" style={{ color: ch.number === chapter.number ? "#6dd5ed" : siteTheme.text, backgroundColor: ch.number === chapter.number ? "#1e1e3a" : "transparent" }}>
                       <span className="truncate">Ch. {ch.number}{ch.title ? ` - ${ch.title}` : ""}</span>
                       {ch.createdAt && <span className="text-[10px] shrink-0 ml-2" style={{ color: siteTheme.muted }}>{new Date(ch.createdAt).toLocaleDateString()}</span>}
                     </Link>
@@ -382,7 +382,7 @@ export default function ChapterReader({ chapter, novel, chapters, loading, error
         <main ref={contentRef} className="flex-1 pb-36 transition-colors min-w-0">
           <article className="max-w-3xl mx-auto px-4 py-8">
             <header className="mb-6">
-              <Link href={novelHref} className="text-xs font-medium transition-colors hover:text-[#2193b0]" style={{ color: siteTheme.muted }}>
+              <Link href={novelHref} className="text-xs font-medium transition-colors hover:text-accent" style={{ color: siteTheme.muted }}>
                 {novel.title}
               </Link>
               <h2 className="flex flex-wrap items-baseline gap-x-3 text-2xl font-bold leading-tight mt-1" style={{ color: textColor }}>
@@ -399,7 +399,7 @@ export default function ChapterReader({ chapter, novel, chapters, loading, error
             </div>
 
             <div className="mt-12 text-center">
-              <Link href={novelHref} className="text-sm transition-colors hover:text-[#2193b0]" style={{ color: siteTheme.muted }}>
+              <Link href={novelHref} className="text-sm transition-colors hover:text-accent" style={{ color: siteTheme.muted }}>
                 ← Back to Table of Contents
               </Link>
             </div>
@@ -421,7 +421,7 @@ export default function ChapterReader({ chapter, novel, chapters, loading, error
                       contentRef.current?.scrollIntoView({ behavior: "smooth" });
                     }
                   }}
-                  className="flex flex-col items-center gap-1 py-2.5 text-xs transition-colors hover:text-[#2193b0]"
+                  className="flex flex-col items-center gap-1 py-2.5 text-xs transition-colors hover:text-accent"
                   style={{ color: activeTab === item.key ? "#2193b0" : siteTheme.muted }}
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
@@ -440,12 +440,12 @@ export default function ChapterReader({ chapter, novel, chapters, loading, error
 
       {/* Floating additional panel buttons */}
       <div className="fixed right-4 top-1/2 -translate-y-1/2 z-30 hidden md:flex flex-col gap-2">
-        <button onClick={() => setShowToc(!showToc)} className="w-10 h-10 rounded-full flex items-center justify-center border text-xs transition-colors hover:bg-[#1e1e3a]" style={{ borderColor: siteTheme.border, color: siteTheme.text, backgroundColor: siteTheme.card }} title="Table of Contents">
+        <button onClick={() => setShowToc(!showToc)} className="w-10 h-10 rounded-full flex items-center justify-center border text-xs transition-colors hover:bg-card-hover" style={{ borderColor: siteTheme.border, color: siteTheme.text, backgroundColor: siteTheme.card }} title="Table of Contents">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path d="M4 6h16M4 12h16M4 18h16" /></svg>
         </button>
         {novel.coverUrl && (
           <div className="w-24 rounded-lg overflow-hidden border shadow-lg" style={{ borderColor: siteTheme.border }}>
-            <div className="aspect-[3/4] bg-[#1e1e3a] flex items-center justify-center text-gray-600 text-xs">
+            <div className="aspect-[3/4] bg-card-hover flex items-center justify-center text-gray-600 text-xs">
               {novel.coverUrl ? (
                 <img src={novel.coverUrl} alt={novel.title} className="w-full h-full object-cover" />
               ) : (
@@ -458,12 +458,12 @@ export default function ChapterReader({ chapter, novel, chapters, loading, error
             </div>
           </div>
         )}
-        <button className="w-full px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors hover:bg-[#1e1e3a]" style={{ borderColor: siteTheme.border, color: siteTheme.text, backgroundColor: siteTheme.card }} title="Edit Terms">
+        <button className="w-full px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors hover:bg-card-hover" style={{ borderColor: siteTheme.border, color: siteTheme.text, backgroundColor: siteTheme.card }} title="Edit Terms">
           Edit Terms
         </button>
         <button
           onClick={onAddToLibrary}
-          className="w-full px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors hover:bg-[#1e1e3a]"
+          className="w-full px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors hover:bg-card-hover"
           style={{ borderColor: inLibrary ? "#10b981" : siteTheme.border, color: inLibrary ? "#10b981" : siteTheme.text, backgroundColor: siteTheme.card }}
           title={inLibrary ? "In Library" : "Add to Library"}
         >

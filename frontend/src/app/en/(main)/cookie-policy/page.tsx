@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Card from "@/components/ui/Card";
 
 export const metadata: Metadata = {
   title: "Cookie Policy - WTR-LAB",
@@ -14,7 +15,7 @@ export default function CookiePolicyPage() {
         <span className="text-gray-400">Cookie Policy</span>
       </nav>
       <h1 className="text-3xl font-bold text-white mb-8">Cookie Policy</h1>
-      <div className="bg-[#12122a] border border-[#1e1e3a] rounded-xl p-8 space-y-4 text-sm text-gray-300 leading-relaxed">
+      <Card className="p-8 space-y-4 text-sm text-gray-300 leading-relaxed">
         <p>This Cookie Policy explains how WTR-Lab uses cookies and similar technologies to recognize you when you visit our website.</p>
         <h2 className="text-lg font-semibold text-white mt-6">What are cookies?</h2>
         <p>Cookies are small data files that are placed on your computer or mobile device when you visit a website. Cookies are widely used by website owners to make their websites work more efficiently and to provide reporting information.</p>
@@ -27,7 +28,7 @@ export default function CookiePolicyPage() {
         </ul>
         <h2 className="text-lg font-semibold text-white mt-6">Managing cookies</h2>
         <p>You can control and manage cookies in your browser settings. Please note that disabling certain cookies may affect the functionality of our website.</p>
-      </div>
+      </Card>
     </div>
   );
 }

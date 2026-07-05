@@ -124,8 +124,8 @@ export default function NovelDetailPage() {
     return (
       <div className="max-w-7xl mx-auto px-4 py-16 text-center">
         <div className="animate-pulse space-y-4">
-          <div className="h-8 bg-[#1e1e3a] rounded w-1/2 mx-auto" />
-          <div className="h-4 bg-[#1e1e3a] rounded w-1/3 mx-auto" />
+          <div className="h-8 bg-card-hover rounded w-1/2 mx-auto" />
+          <div className="h-4 bg-card-hover rounded w-1/3 mx-auto" />
         </div>
       </div>
     );
@@ -147,7 +147,7 @@ export default function NovelDetailPage() {
       {/* Hero Section */}
       <div className="flex flex-col sm:flex-row gap-6 mb-8">
         {/* Cover */}
-        <div className="w-48 sm:w-56 aspect-[3/4] rounded-xl bg-[#1e1e3a] border border-[#2a2a4a] flex-shrink-0 flex items-center justify-center overflow-hidden mx-auto sm:mx-0">
+        <div className="w-48 sm:w-56 aspect-[3/4] rounded-xl bg-card-hover border border-line-light flex-shrink-0 flex items-center justify-center overflow-hidden mx-auto sm:mx-0">
           {novel.CoverURL ? (
             <img src={novel.CoverURL} alt="" className="w-full h-full object-cover" />
           ) : (
@@ -185,7 +185,7 @@ export default function NovelDetailPage() {
               <span>AI-Unlock Progress</span>
               <span className="text-violet-400">{novel.AIPercent}</span>
             </div>
-            <div className="w-full max-w-xs h-2 bg-[#1e1e3a] rounded-full overflow-hidden">
+            <div className="w-full max-w-xs h-2 bg-card-hover rounded-full overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-violet-600 to-purple-600 rounded-full"
                 style={{ width: novel.AIPercent }}
@@ -221,7 +221,7 @@ export default function NovelDetailPage() {
       </div>
 
       {/* Tabs */}
-      <div className="border-b border-[#1e1e3a] mb-6">
+      <div className="border-b border-line mb-6">
         <div className="flex gap-6">
           {(["about", "toc", "reviews", "recommendations"] as const).map((tab) => (
             <button
@@ -241,7 +241,7 @@ export default function NovelDetailPage() {
 
       {/* Tab Content */}
       {activeTab === "about" && (
-        <div className="bg-[#12122a] border border-[#1e1e3a] rounded-xl p-6">
+        <div className="bg-card border border-line rounded-xl p-6">
           <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-line">{novel.Description}</p>
 
           {/* Details */}
@@ -275,13 +275,13 @@ export default function NovelDetailPage() {
       )}
 
       {activeTab === "toc" && (
-        <div className="bg-[#12122a] border border-[#1e1e3a] rounded-xl p-4">
+        <div className="bg-card border border-line rounded-xl p-4">
           <div className="space-y-1 max-h-[600px] overflow-y-auto">
             {chapters.map((ch) => (
               <Link
                 key={ch.ID}
                 href={`/en/novel/${novel.ID}/${novel.Slug}/chapter-${ch.Number}`}
-                className="flex items-center justify-between px-4 py-2.5 rounded-lg hover:bg-[#1e1e3a] transition-colors group"
+                className="flex items-center justify-between px-4 py-2.5 rounded-lg hover:bg-card-hover transition-colors group"
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <span className="text-sm text-gray-500 w-8 flex-shrink-0">#{ch.Number}</span>
@@ -305,11 +305,11 @@ export default function NovelDetailPage() {
 
           {/* Chapter pagination */}
           {totalChapters > 50 && (
-            <div className="flex items-center justify-center gap-2 mt-4 pt-4 border-t border-[#1e1e3a]">
+            <div className="flex items-center justify-center gap-2 mt-4 pt-4 border-t border-line">
               <button
                 onClick={() => setChapterPage(Math.max(1, chapterPage - 1))}
                 disabled={chapterPage <= 1}
-                className="px-3 py-1 text-xs rounded bg-[#1e1e3a] text-gray-400 hover:text-white disabled:opacity-40 transition-colors"
+                className="px-3 py-1 text-xs rounded bg-card-hover text-gray-400 hover:text-white disabled:opacity-40 transition-colors"
               >
                 Previous
               </button>
@@ -319,7 +319,7 @@ export default function NovelDetailPage() {
               <button
                 onClick={() => setChapterPage(Math.min(Math.ceil(totalChapters / 50), chapterPage + 1))}
                 disabled={chapterPage >= Math.ceil(totalChapters / 50)}
-                className="px-3 py-1 text-xs rounded bg-[#1e1e3a] text-gray-400 hover:text-white disabled:opacity-40 transition-colors"
+                className="px-3 py-1 text-xs rounded bg-card-hover text-gray-400 hover:text-white disabled:opacity-40 transition-colors"
               >
                 Next
               </button>
@@ -329,13 +329,13 @@ export default function NovelDetailPage() {
       )}
 
       {activeTab === "reviews" && (
-        <div className="bg-[#12122a] border border-[#1e1e3a] rounded-xl p-6 text-center text-sm text-gray-500">
+        <div className="bg-card border border-line rounded-xl p-6 text-center text-sm text-gray-500">
           No reviews yet. Be the first to review!
         </div>
       )}
 
       {activeTab === "recommendations" && (
-        <div className="bg-[#12122a] border border-[#1e1e3a] rounded-xl p-6 text-center text-sm text-gray-500">
+        <div className="bg-card border border-line rounded-xl p-6 text-center text-sm text-gray-500">
           No recommendations available.
         </div>
       )}

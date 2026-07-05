@@ -1,5 +1,6 @@
 "use client";
 
+import Card from "@/components/ui/Card";
 import { useState } from "react";
 import { requests } from "@/lib/api";
 
@@ -71,21 +72,21 @@ export default function RequestSeriePage() {
       {error && <div className="mb-6 p-3 rounded-lg bg-red-900/30 border border-red-800/30 text-sm text-red-400">{error}</div>}
 
       {showForm && (
-        <form onSubmit={handleSubmit} className="bg-[#12122a] border border-[#1e1e3a] rounded-xl p-6 mb-6 space-y-4">
+        <form onSubmit={handleSubmit} className="bg-card border border-line rounded-xl p-6 mb-6 space-y-4">
           <div>
             <label className="block text-sm text-gray-400 mb-1">Novel Title *</label>
             <input value={novelTitle} onChange={(e) => setNovelTitle(e.target.value)} required placeholder="Enter the novel title"
-              className="w-full bg-[#1e1e3a] border border-[#2a2a4a] rounded-lg px-4 py-2.5 text-sm text-gray-200 outline-none focus:border-violet-600" />
+              className="w-full bg-card-hover border border-line-light rounded-lg px-4 py-2.5 text-sm text-gray-200 outline-none focus:border-violet-600" />
           </div>
           <div>
             <label className="block text-sm text-gray-400 mb-1">Novel URL (optional)</label>
             <input value={novelURL} onChange={(e) => setNovelURL(e.target.value)} placeholder="https://..."
-              className="w-full bg-[#1e1e3a] border border-[#2a2a4a] rounded-lg px-4 py-2.5 text-sm text-gray-200 outline-none focus:border-violet-600" />
+              className="w-full bg-card-hover border border-line-light rounded-lg px-4 py-2.5 text-sm text-gray-200 outline-none focus:border-violet-600" />
           </div>
           <div>
             <label className="block text-sm text-gray-400 mb-1">Source (optional)</label>
             <input value={source} onChange={(e) => setSource(e.target.value)} placeholder="e.g. kakao.com, munpia.com"
-              className="w-full bg-[#1e1e3a] border border-[#2a2a4a] rounded-lg px-4 py-2.5 text-sm text-gray-200 outline-none focus:border-violet-600" />
+              className="w-full bg-card-hover border border-line-light rounded-lg px-4 py-2.5 text-sm text-gray-200 outline-none focus:border-violet-600" />
           </div>
           <button type="submit" className="px-6 py-2.5 bg-violet-600 hover:bg-violet-700 text-white text-sm font-medium rounded-lg transition-colors">Submit Request</button>
         </form>
@@ -93,7 +94,7 @@ export default function RequestSeriePage() {
 
       <div className="space-y-3">
         {items.map((req) => (
-          <div key={req.id} className="flex items-center gap-4 p-4 bg-[#12122a] border border-[#1e1e3a] rounded-xl">
+          <Card key={req.id} className="flex items-center gap-4">
             <div className="min-w-0 flex-1">
               <p className="text-sm text-gray-200 font-medium">{req.title}</p>
               <div className="flex items-center gap-3 mt-1">
@@ -105,7 +106,7 @@ export default function RequestSeriePage() {
               <p className="text-sm text-violet-400 font-medium">{req.votes} votes</p>
               <p className="text-xs text-gray-600">{req.date}</p>
             </div>
-          </div>
+          </Card>
         ))}
       </div>
     </div>

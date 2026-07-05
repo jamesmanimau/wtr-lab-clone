@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Card from "@/components/ui/Card";
 
 export const metadata: Metadata = {
   title: "DMCA - WTR-LAB",
@@ -14,7 +15,7 @@ export default function DMCAPage() {
         <span className="text-gray-400">DMCA</span>
       </nav>
       <h1 className="text-3xl font-bold text-white mb-8">DMCA Notice</h1>
-      <div className="bg-[#12122a] border border-[#1e1e3a] rounded-xl p-8 space-y-4 text-sm text-gray-300 leading-relaxed">
+      <Card className="p-8 space-y-4 text-sm text-gray-300 leading-relaxed">
         <p>WTR-Lab respects the intellectual property rights of others and expects its users to do the same. In accordance with the Digital Millennium Copyright Act (DMCA), we will respond promptly to notices of alleged copyright infringement.</p>
         <p>If you believe that your work has been copied in a way that constitutes copyright infringement, please provide our Copyright Agent with the following information:</p>
         <ul className="list-disc pl-5 space-y-2">
@@ -26,7 +27,7 @@ export default function DMCAPage() {
           <li>A statement by you, made under penalty of perjury, that the above information in your notice is accurate and that you are the copyright owner or authorized to act on the copyright owner&apos;s behalf</li>
         </ul>
         <p>Please contact us at <a href="mailto:admin@wtr-lab.com" className="text-violet-400 hover:text-violet-300">admin@wtr-lab.com</a> for DMCA-related inquiries.</p>
-      </div>
+      </Card>
     </div>
   );
 }

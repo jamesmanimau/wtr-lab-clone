@@ -18,7 +18,7 @@ const footerLinks = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-[#1e1e3a] mt-16">
+    <footer className="border-t border-line mt-16">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-gray-500 mb-6">
           <Link href="/en" className="hover:text-gray-300 transition-colors">Intro</Link>
@@ -29,7 +29,7 @@ export default function Footer() {
           ))}
         </div>
         <p className="text-center text-sm text-gray-600">
-          Copyright © 2022 - wtr-lab.com <span className="text-[#2193b0] ml-2">v1.13.4</span>
+          Copyright © 2022 - wtr-lab.com <span className="text-accent ml-2">v1.13.4</span>
         </p>
       </div>
     </footer>
